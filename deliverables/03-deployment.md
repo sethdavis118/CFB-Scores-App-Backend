@@ -32,12 +32,13 @@ Create and host a new database on Render.
 Complete the following steps in your _local_ backend repository.
 
 7. Change `DATABASE_URL` in `.env` to the external database url.
-8. Initialize the schema of the external database by running this command in the
+8. Add `NODE_ENV=production` to your `.env` file.
+9. Initialize the schema of the external database by running this command in the
    root of your backend repository.\
    `psql replace_with_external_url -f db/schema.sql`\
    Example: `psql postgresql://user:pass@render.com/capstone_database -f db/schema.sql`
-9. Seed the external database.\
-   `npm run db:seed`
+10. Seed the external database.\
+    `npm run db:seed`
 
 That's it! Your database is now deployed and seeded.
 
@@ -45,6 +46,11 @@ That's it! Your database is now deployed and seeded.
 >
 > Be careful with CRUD operations, especially if you are in a team!
 > This will now permanently affect the external database.
+
+> [!TIP]
+>
+> You can temporarily undo the changes in your `.env` file if you want
+> to continue working on your local development database.
 
 ### API
 
