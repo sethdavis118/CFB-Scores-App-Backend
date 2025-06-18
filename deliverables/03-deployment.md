@@ -31,14 +31,14 @@ Create and host a new database on Render.
 
 Complete the following steps in your _local_ backend repository.
 
-7. Change `DATABASE_URL` in `.env` to the external database url.
-8. Add `NODE_ENV=production` to your `.env` file.
-9. Initialize the schema of the external database by running this command in the
+6. Change `DATABASE_URL` in `.env` to the external database url.
+7. Add `NODE_ENV=production` to your `.env` file.
+8. Initialize the schema of the external database by running this command in the
    root of your backend repository.\
    `psql replace_with_external_url -f db/schema.sql`\
    Example: `psql postgresql://user:pass@render.com/capstone_database -f db/schema.sql`
-10. Seed the external database.\
-    `npm run db:seed`
+9. Seed the external database.\
+   `npm run db:seed`
 
 That's it! Your database is now deployed and seeded.
 
@@ -56,18 +56,18 @@ That's it! Your database is now deployed and seeded.
 
 Create and host a new web service on Render.
 
-4. Click "+ New" at the top and select "Web Service".
-5. In the "Source Code" section, the "Git Provider" tab should auto-populate
+1. Click "+ New" at the top and select "Web Service".
+2. In the "Source Code" section, the "Git Provider" tab should auto-populate
    with your GitHub repositories. Find and connect your **backend** repository.
-6. Give your API a name.
-7. Set the "Build Command".\
+3. Give your API a name.
+4. Set the "Build Command".\
    `npm install`
-8. Leave the "Start Command" as `npm run start`.
-9. Set the "Instance Type" to "Free".
-10. Expand the "Advanced" section to click the "+ Add" button under "Secret Files".
-11. Set the "Filename" to `.env`.
-12. Copy and paste the contents of your `.env` file into the "Contents" textarea.
-13. Click "Create Web Service."
+5. Leave the "Start Command" as `npm run start`.
+6. Set the "Instance Type" to "Free".
+7. Expand the "Advanced" section to click the "+ Add" button under "Secret Files".
+8. Set the "Filename" to `.env`.
+9. Copy and paste the contents of your `.env` file into the "Contents" textarea.
+10. Click "Create Web Service."
 
 Your backend is now deployed! You can find the live URL to your backend at the
 top of the page. It will automatically redeploy whenever changes are pushed to
