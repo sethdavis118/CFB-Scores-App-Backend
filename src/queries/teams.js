@@ -1,7 +1,6 @@
 import db from "../db/client.js";
 
 export async function GetTeams() {
-  console.log(`GetBooks() ran`);
   const sql = "SELECT * FROM teams";
   const { rows: teams } = await db.query(sql);
   return teams;
@@ -28,9 +27,9 @@ export async function CreateTeam(
 ) {
   const sql =
     "INSERT INTO teams (team_id, school, mascot, abbreviation, conference, division, classification, color, alternate_color, logos, home_location_id)" +
-    " VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *";
+    "VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *";
   try {
-    const team = await db.query(sql, [
+    const { rows: team } = await db.query(sql, [
       team_id,
       school,
       mascot,
@@ -40,7 +39,7 @@ export async function CreateTeam(
       classification,
       color,
       alternate_color,
-      logos,
+      "{" + logos + "}",
       home_location_id,
     ]);
     return team;
