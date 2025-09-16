@@ -6,9 +6,10 @@ DROP TABLE IF EXISTS odds;
 
 CREATE TABLE
     teams (
-        team_id TEXT PRIMARY KEY,
-        school TEXT NOT NULL,
-        mascot TEXT NOT NULL,
+        id SERIAL PRIMARY KEY,
+        team_id TEXT,
+        school TEXT,
+        mascot TEXT,
         abbreviation TEXT,
         conference TEXT,
         division TEXT,
@@ -21,7 +22,8 @@ CREATE TABLE
 
 CREATE TABLE
     games (
-        game_id TEXT PRIMARY KEY,
+        id SERIAL PRIMARY KEY,
+        game_id TEXT,
         commence_time DATE NOT NULL,
         home_team_id TEXT NOT NULL,
         away_team_id TEXT NOT NULL,
@@ -31,6 +33,7 @@ CREATE TABLE
 
 CREATE TABLE
     odds (
+        id SERIAL PRIMARY KEY,
         game_id TEXT NOT NULL REFERENCES games (game_id),
         bookmaker TEXT,
         last_update DATE,

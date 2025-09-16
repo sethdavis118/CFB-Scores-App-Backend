@@ -10,13 +10,13 @@ await db.end();
 console.log("🌱 Database seeded.");
 async function seed() {
   console.log(`DB Client: ${db}`);
-  SeedTeams();
+  await SeedTeams();
 }
 
 async function SeedTeams() {
   try {
+    console.log(teamList);
     for (const team of teamList) {
-      //console.log(team);
       await CreateTeam(
         team.team_id,
         team.school,
