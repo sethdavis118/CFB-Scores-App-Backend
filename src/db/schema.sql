@@ -1,8 +1,12 @@
+BEGIN TRANSACTION;
+
 DROP TABLE IF EXISTS teams CASCADE;
 
 DROP TABLE IF EXISTS games;
 
 DROP TABLE IF EXISTS odds;
+
+DROP TABLE IF EXISTS scoreboard;
 
 
 CREATE TABLE
@@ -54,7 +58,13 @@ CREATE TABLE
         away_team_point NUMERIC(2, 1),
         UNIQUE (game_id, last_update)
     );
+/*
+CREATE TABLE scoreboad (
+    id SERIAL PRIMARY KEY,
+    tv TEXT,
 
+)
+*/
 --     CREATE TABLE users (
 --     id SERIAL PRIMARY KEY,
 --     username VARCHAR(50) UNIQUE NOT NULL,
@@ -68,3 +78,4 @@ CREATE TABLE
 --     team_id INT REFERENCES teams(id) ON DELETE CASCADE,
 --     PRIMARY KEY (user_id, team_id)
 -- );
+COMMIT;

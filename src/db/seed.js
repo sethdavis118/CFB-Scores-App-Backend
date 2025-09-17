@@ -19,12 +19,14 @@ async function seed() {
 async function SeedTeams() {
   try {
     for (const team of teamList) {
-      if ((team.classification = "fbs")) {
+      if (team.division === "fbs") {
+        console.log(team.id);
         await CreateTeam(
-          team.team_id,
+          Number(team.id),
           team.school,
           team.mascot,
           team.abbreviation,
+          team.division,
           team.conference,
           team.classification,
           team.color,
@@ -32,7 +34,7 @@ async function SeedTeams() {
           team.logos,
           team.location.id
         );
-        //console.log("Team after insert", team);
+        console.log(`team object after CreateTeam() is called: ${team}`);
       }
     }
   } catch (e) {
@@ -43,7 +45,6 @@ async function SeedTeams() {
 async function SeedGames() {
   try {
     for (const game of gameList) {
-      console.log(`game before insert: ${game}`);
       await CreateGame(
         game.id,
         game.season,
@@ -60,7 +61,6 @@ async function SeedGames() {
         game.awayPoints,
         game.awayLineScores
       );
-      console.log(`game after insert: ${game}`);
     }
   } catch (e) {
     console.error(e);
