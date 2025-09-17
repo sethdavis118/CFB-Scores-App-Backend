@@ -6,12 +6,27 @@ export async function GetTeams() {
   return teams;
 }
 
+<<<<<<< HEAD
 export async function GetTeam(id) {
   const sql = "SELECT * FROM teams WHERE id = $1";
   const team = await db.query(sql);
   return team;
 }
 
+=======
+export async function GetTeamById(id) {
+  const sql = "SELECT * FROM teams WHERE id = $1";
+  const team = await db.query(sql, [id]);
+  return team;
+}
+
+export async function GetTeamsByConference() {
+  const sql = "SELECT * FROM teams WHERE conference = $1";
+  const { rows: teams } = await db.query(sql, [conference]);
+  return teams;
+}
+
+>>>>>>> bc9eaf0ed092ff2fca7e5501de12341ad1e06a7c
 export async function CreateTeam(
   team_id,
   school,

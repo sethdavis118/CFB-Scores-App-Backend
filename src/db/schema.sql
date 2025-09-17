@@ -1,8 +1,9 @@
-DROP TABLE IF EXISTS teams;
+DROP TABLE IF EXISTS teams CASCADE;
 
 DROP TABLE IF EXISTS games;
 
 DROP TABLE IF EXISTS odds;
+
 
 CREATE TABLE
     teams (
@@ -53,3 +54,17 @@ CREATE TABLE
         away_team_point NUMERIC(2, 1),
         UNIQUE (game_id, last_update)
     );
+
+--     CREATE TABLE users (
+--     id SERIAL PRIMARY KEY,
+--     username VARCHAR(50) UNIQUE NOT NULL,
+--     email VARCHAR(100) UNIQUE NOT NULL, 
+--     favorite_team REFERENCES teams(id) ON DELETE SET NULL,
+-- );
+
+
+-- CREATE TABLE favorites (
+--     user_id INT REFERENCES users(id) ON DELETE CASCADE,
+--     team_id INT REFERENCES teams(id) ON DELETE CASCADE,
+--     PRIMARY KEY (user_id, team_id)
+-- );
