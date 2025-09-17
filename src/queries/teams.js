@@ -33,9 +33,21 @@ export async function CreateTeam(
   logos,
   home_location_id
 ) {
-  const sql =
-    "INSERT INTO teams (team_id, school, mascot, abbreviation, conference, division, classification, color, alternate_color, logos, home_location_id)" +
-    "VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *";
+  const sql = `
+    INSERT INTO teams (
+    team_id,
+    school,
+    mascot,
+    abbreviation,
+    conference,
+    division,
+    classification,
+    color,
+    alternate_color,
+    logos,
+    home_location_id)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *;
+    `;
   try {
     const { rows: team } = await db.query(sql, [
       team_id,
@@ -50,6 +62,7 @@ export async function CreateTeam(
       "{" + logos + "}",
       home_location_id,
     ]);
+    console.log(`CreateTeam call after INSERT {${team}}`);
     return team;
   } catch (e) {
     console.error(e);
