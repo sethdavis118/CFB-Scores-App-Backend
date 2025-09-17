@@ -28,4 +28,9 @@ router.param("id", async (req, res, next, id) => {
   const team = await GetTeamById(id);
   if (!team) return res.status(404).send("Team not found");
   req.team = team;
+  next();
+});
+
+router.route("/:id").get((req, res) => {
+  res.send(req.team);
 });
