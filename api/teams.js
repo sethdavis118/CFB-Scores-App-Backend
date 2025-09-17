@@ -1,5 +1,5 @@
 import express from "express";
-const router = express.Router;
+const router = express.Router();
 export default router;
 import requireUser from "#middleware/requireUser";
 import requireBody from "#middleware/requireBody";

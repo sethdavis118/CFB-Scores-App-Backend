@@ -1,6 +1,4 @@
 import pg from "pg";
-<<<<<<< HEAD
-=======
 //import { env } from "node:process";
 import dotenv from "dotenv";
 dotenv.config();
@@ -11,6 +9,5 @@ if (process.env.NODE_ENV === "production") {
 if (process.env.DEBUG) {
   console.log("Debugging output");
 }
->>>>>>> bc9eaf0ed092ff2fca7e5501de12341ad1e06a7c
 const db = new pg.Client(process.env.DATABASE_URL);
 export default db;
