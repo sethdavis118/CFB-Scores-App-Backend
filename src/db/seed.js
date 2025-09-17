@@ -2,8 +2,8 @@ import db from "./client.js";
 import { GetTeams, CreateTeam } from "../queries/teams.js";
 import { GetGames, GetGame, CreateGame } from "../queries/games.js";
 import teamList from "../../CFDTeams.js";
-import gameList from "../../CFDGames.js";
-import conferenceList from "../../CFDConferences.js";
+// import gameList from "../../CFDGames.js";
+// import conferenceList from "../../CFDConferences.js";
 //import gameList from "../../ncaafevents.json";
 //import oddsList from "../../oddsspreads.json";
 //import { Register } from "#db/queries/users";
@@ -14,7 +14,7 @@ console.log("🌱 Database seeded.");
 async function seed() {
   console.log(`DB Client: ${db}`);
   await SeedTeams();
-  await SeedGames();
+  // await SeedGames();
 }
 
 async function SeedTeams() {
@@ -27,9 +27,10 @@ async function SeedTeams() {
           team.mascot,
           team.abbreviation,
           team.conference,
+          team.division,
           team.classification,
           team.color,
-          team.alternateColor,
+          team.alternateColor, //Right now this returs the team logos
           team.logos,
           team.location.id
         );
@@ -41,28 +42,28 @@ async function SeedTeams() {
   }
 }
 
-async function SeedGames() {
-  try {
-    for (const game of gameList) {
-      CreateGame(
-        game.game_id,
-        game.season,
-        game.week,
-        game.seasonType,
-        game.startDate,
-        game.completed,
-        game.neutralSite,
-        game.conferenceGame,
-        game.homeId,
-        game.homePoints,
-        "{" + game.homeLineScores + "}",
-        game.awayId,
-        game.awayPoints,
-        "{" + game.awayLineScores + "}"
-      );
-      console.log(`game after insert: ${game}`);
-    }
-  } catch (e) {
-    console.error(e);
-  }
-}
+// async function SeedGames() {
+//   try {
+//     for (const game of gameList) {
+//       CreateGame(
+//         game.game_id,
+//         game.season,
+//         game.week,
+//         game.seasonType,
+//         game.startDate,
+//         game.completed,
+//         game.neutralSite,
+//         game.conferenceGame,
+//         game.homeId,
+//         game.homePoints,
+//         "{" + game.homeLineScores + "}",
+//         game.awayId,
+//         game.awayPoints,
+//         "{" + game.awayLineScores + "}"
+//       );
+//       console.log(`game after insert: ${game}`);
+//     }
+//   } catch (e) {
+//     console.error(e);
+//   }
+// }

@@ -36,7 +36,7 @@ CREATE TABLE
         home_qtr_scores INT [],
         away_team_id INT NOT NULL,
         away_points INT NOT NULL,
-        away_qtr_scores INT [],
+        away_qtr_scores INT []
     );
         
         

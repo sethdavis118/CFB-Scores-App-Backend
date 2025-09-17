@@ -1,27 +1,36 @@
 {
   "name": "capstone-backend",
   "version": "1.0.0",
+  "type": "module",
   "description": "Congratulations! You've made it to the Capstone project!",
   "main": "app.js",
   "directories": {
     "example": "examples"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sethdavis118/CFB-Scores-App-Backend.git"
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "test": "vitest",
+    "db:schema": "psql -d cfbodds -f ./src/db/schema.sql",
+    "db:seed": "node --env-file=.env ./src/db/seed.js",
+    "db:seed-debug": "nodemon --inspect --env-file=.env ./src/db/seed.js",
+    "db:reset": "npm run db:schema && npm run db:seed",
+    "debug": "node --inspect ./src/queries/games.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/sethdavis118/CFB-Scores-App-Backend/issues"
   },
   "homepage": "https://github.com/sethdavis118/CFB-Scores-App-Backend#readme",
   "dependencies": {
-    "express": "^5.1.0"
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "node": "^24.8.0",
+    "pg": "^8.16.3",
+    "vite": "^7.1.5"
   }
 }
