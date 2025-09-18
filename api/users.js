@@ -7,13 +7,21 @@ import { createToken } from "#utils/jwt";
 
 router
   .route("/register")
-  .post(requireBody(["email", "password"]), async (req, res) => {
-    const { email, password } = req.body;
-    const user = await createUSer(email, password);
+  .post(
+    requireBody(["email", "password", "favorite_team", "favorite_conference"]),
+    async (req, res) => {
+      const { email, password } = req.body;
+      const user = await createUSer(
+        email,
+        password,
+        favorite_team,
+        favorite_conference
+      );
 
-    const token = createToken({ id: user.id });
-    res.status(201).send(token);
-  });
+      const token = createToken({ id: user.id });
+      res.status(201).send(token);
+    }
+  );
 
 router
   .route("/login")

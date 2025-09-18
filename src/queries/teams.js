@@ -8,7 +8,17 @@ export async function getTeams() {
 
 export async function getTeamById(id) {
   const sql = "SELECT * FROM teams WHERE id = $1";
-  const team = await db.query(sql, [id]);
+  const {
+    rows: [team],
+  } = await db.query(sql, [id]);
+  return team;
+}
+
+export async function GetTeamByTeamId(team_id) {
+  const sql = "SELECT * FROM teams WHERE team_id = $1";
+  const {
+    rows: [team],
+  } = await db.query(sql, [team_id]);
   return team;
 }
 

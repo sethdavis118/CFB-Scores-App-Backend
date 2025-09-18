@@ -11,6 +11,13 @@ export async function getGame(id) {
   const game = await db.query(sql, [id]);
   return game;
 }
+export async function GetGamesByTeam(team_id) {
+  const sql = `SELECT * FROM games WHERE home_team_id = $1 OR away_team_id = $1`;
+  const {
+    rows: [games],
+  } = await db.query(sql, [team_id]);
+  return games;
+}
 
 export async function createGame(
   game_id,
