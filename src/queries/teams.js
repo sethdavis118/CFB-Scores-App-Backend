@@ -1,24 +1,24 @@
 import db from "../db/client.js";
 
-export async function GetTeams() {
+export async function getTeams() {
   const sql = "SELECT * FROM teams";
   const { rows: teams } = await db.query(sql);
   return teams;
 }
 
-export async function GetTeamById(id) {
+export async function getTeamById(id) {
   const sql = "SELECT * FROM teams WHERE id = $1";
   const team = await db.query(sql, [id]);
   return team;
 }
 
-export async function GetTeamsByConference() {
+export async function getTeamsByConference() {
   const sql = "SELECT * FROM teams WHERE conference = $1";
   const { rows: teams } = await db.query(sql, [conference]);
   return teams;
 }
 
-export async function CreateTeam(
+export async function createTeam(
   team_id,
   school,
   mascot,

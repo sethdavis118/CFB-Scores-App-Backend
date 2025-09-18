@@ -1,7 +1,7 @@
 import db from "./client.js";
-import { GetTeams, CreateTeam, GetTeamById } from "../queries/teams.js";
-import { GetGames, GetGame, CreateGame } from "../queries/games.js";
-import { CreateScoreboard } from "../queries/scoreboards.js";
+import { createTeam } from "../queries/teams.js";
+import { createGame } from "../queries/games.js";
+import { createScoreboard } from "../queries/scoreboards.js";
 import teamList from "../../CFDTeams.js";
 import gameList from "../../CFDGames.js";
 import scoreboardList from "../../CFDScoreboard.js";
@@ -14,16 +14,16 @@ await seed();
 await db.end();
 console.log("🌱 Database seeded.");
 async function seed() {
-  await SeedTeams();
-  await SeedGames();
-  await SeedScoreboards();
+  await seedTeams();
+  await seedGames();
+  await seedScoreboards();
 }
 
-async function SeedTeams() {
+async function seedTeams() {
   try {
     for (const team of teamList) {
       console.log(`team.id ${team.id}`);
-      await CreateTeam(
+      await createTeam(
         Number(team.id),
         team.school,
         team.mascot,
@@ -42,11 +42,11 @@ async function SeedTeams() {
   }
 }
 
-async function SeedGames() {
+async function seedGames() {
   try {
     for (const game of gameList) {
       console.log(`game.id ${game.id}`);
-      await CreateGame(
+      await createGame(
         game.id,
         game.season,
         game.week,
@@ -68,31 +68,15 @@ async function SeedGames() {
   }
 }
 
-async function SeedScoreboards() {
-  try {
-    for (const sb of scoreboardList) {
-      console.log(`scoreboard.id ${sb.id}`);
-      CreateScoreboard(
-        sb.id,
-        sb.startDate,
-        sb.startTimeTBD,
-        sb.tv,
-        sb.neutralSite,
-        sb.conferenceGame,
-        sb.status,
-        sb.period,
-        sb.clock,
-        sb.situation,
-        sb.possession,
-        sb.lastPlay,
-        sb.venue,
-        sb.homeTeam,
-        sb.awayTeam,
-        sb.weather,
-        sb.betting
-      );
-    }
-  } catch (e) {
-    console.error(e);
+async function seedScoreboards() {
+  // try {
+  for (const sb of scoreboardList) {
+    console.log(`scoreboard.id ${sb.id}`);
+    await createScoreboard(sb);
   }
+  //
+
+  // console.error(e);
+  // }
 }
+// //

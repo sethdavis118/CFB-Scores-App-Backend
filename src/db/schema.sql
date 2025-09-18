@@ -51,6 +51,7 @@ CREATE TABLE scoreboards (
     game_status TEXT,
     game_period TEXT,
     clock TEXT,
+    situation TEXT,
     possesion TEXT,
     last_play TEXT,
     venue TEXT [],
