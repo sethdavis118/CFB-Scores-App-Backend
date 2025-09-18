@@ -19,7 +19,7 @@ async function seed() {
 async function SeedTeams() {
   try {
     for (const team of teamList) {
-      if (team.division === "fbs") {
+      if (team.classification === "fbs") {
         console.log(team.id);
         await CreateTeam(
           Number(team.id),

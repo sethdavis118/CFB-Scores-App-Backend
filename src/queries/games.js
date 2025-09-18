@@ -6,6 +6,7 @@ export async function GetGames() {
   return games;
 }
 
+// Should we make one that can get the game by game_id ?
 export async function GetGame(id) {
   const sql = `SELECT * FROM games WHERE id = $1`;
   const game = await db.query(sql, [id]);
