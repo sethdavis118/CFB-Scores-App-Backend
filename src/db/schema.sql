@@ -4,9 +4,7 @@ DROP TABLE IF EXISTS teams CASCADE;
 
 DROP TABLE IF EXISTS games;
 
-DROP TABLE IF EXISTS odds;
-
-DROP TABLE IF EXISTS scoreboard;
+DROP TABLE IF EXISTS scoreboards;
 
 
 CREATE TABLE
@@ -43,28 +41,25 @@ CREATE TABLE
         away_points INT NOT NULL,
         away_qtr_scores INT []
     );
-        
-        
 
-CREATE TABLE
-    odds (
-        id SERIAL PRIMARY KEY,
-        game_id TEXT NOT NULL,
-        bookmaker TEXT,
-        last_update DATE,
-        home_team_id TEXT NOT NULL,
-        home_team_point NUMERIC(2, 1),
-        away_team_id TEXT NOT NULL,
-        away_team_point NUMERIC(2, 1),
-        UNIQUE (game_id, last_update)
-    );
-/*
-CREATE TABLE scoreboad (
-    id SERIAL PRIMARY KEY,
+CREATE TABLE scoreboards (
+    game_id INT PRIMARY KEY,
+    start_date DATE,
+    start_time_tbd BOOLEAN,
     tv TEXT,
-
-)
-*/
+    neutral_site BOOLEAN,
+    game_status TEXT,
+    game_period TEXT,
+    clock TEXT,
+    situation TEXT,
+    possesion TEXT,
+    last_play TEXT,
+    venue TEXT [],
+    home_team TEXT [],
+    away_team TEXT [],
+    weather TEXT [],
+    betting TEXT []
+);
 --     CREATE TABLE users (
 --     id SERIAL PRIMARY KEY,
 --     username VARCHAR(50) UNIQUE NOT NULL,

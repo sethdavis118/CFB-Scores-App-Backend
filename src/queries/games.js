@@ -1,13 +1,12 @@
 import db from "../db/client.js";
 
-export async function GetGames() {
+export async function getGames() {
   const sql = ` SELECT * FROM games`;
   const { rows: games } = await db.query(sql);
   return games;
 }
 
-// Should we make one that can get the game by game_id ?
-export async function GetGame(id) {
+export async function getGame(id) {
   const sql = `SELECT * FROM games WHERE id = $1`;
   const game = await db.query(sql, [id]);
   return game;
@@ -20,7 +19,7 @@ export async function GetGamesByTeam(team_id) {
   return games;
 }
 
-export async function CreateGame(
+export async function createGame(
   game_id,
   season,
   season_week,

@@ -1,12 +1,12 @@
 import db from "../db/client.js";
 
-export async function GetTeams() {
+export async function getTeams() {
   const sql = "SELECT * FROM teams";
   const { rows: teams } = await db.query(sql);
   return teams;
 }
 
-export async function GetTeamById(id) {
+export async function getTeamById(id) {
   const sql = "SELECT * FROM teams WHERE id = $1";
   const {
     rows: [team],
@@ -22,13 +22,13 @@ export async function GetTeamByTeamId(team_id) {
   return team;
 }
 
-export async function GetTeamsByConference() {
+export async function getTeamsByConference() {
   const sql = "SELECT * FROM teams WHERE conference = $1";
   const { rows: teams } = await db.query(sql, [conference]);
   return teams;
 }
 
-export async function CreateTeam(
+export async function createTeam(
   team_id,
   school,
   mascot,
@@ -70,7 +70,6 @@ export async function CreateTeam(
       "{" + logos + "}",
       home_location_id,
     ]);
-    console.log(`CreateTeam call after INSERT {${team}}`);
     return team;
   } catch (e) {
     console.error(e);
