@@ -3,7 +3,8 @@ const router = express.Router();
 import requireUser from "#middleware/requireUser";
 export default router;
 
-import { GetGames, GetGameById, GetGamesByTeam } from "#src/queries/games";
+
+import { GetGames, GetGameById, GetGamesByTeam, GetGamesByWeek, GetGamesBySeasonType } from "#src/queries/games";
 
 //all games
 router.route("/").get(async (req, res) => {
@@ -29,5 +30,20 @@ router.route("/:id/games").get(requireUser, async (req, res) => {
 //games by team
 router.route("/:id/games/teams").get(requireUser, async (req, res) => {
   const games = await GetGamesByTeam(req.params.id);
+  res.send(games);
+});
+//games by week
+router.route("/:id/games/weeks").get(requireUser, async (req, res) => {
+  const games = await GetGamesByWeek(req.params.id);
+  res.send(games);
+});
+//games by season type
+router.route("/:id/games/seasonType").get(requireUser, async (req, res) => {
+  const games = await GetGamesBySeasonType(req.params.id);
+  res.send(games);
+});
+//games by conference
+router.route("/:id/games/conference").get(requireUser, async (req, res) => {
+  const games = await GetGamesByConference(req.params.id);
   res.send(games);
 });
