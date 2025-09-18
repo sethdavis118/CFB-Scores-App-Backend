@@ -3,13 +3,8 @@ const router = express.Router();
 import requireUser from "#middleware/requireUser";
 export default router;
 
-import {
-  GetGames,
-  GetGame,
-  GetGamesByTeam,
-  GetGamesByWeek,
-  GetGamesBySeasonType,
-} from "#src/queries/games";
+
+import { GetGames, GetGameById, GetGamesByTeam, GetGamesByWeek, GetGamesBySeasonType } from "#src/queries/games";
 
 //all games
 router.route("/").get(async (req, res) => {
