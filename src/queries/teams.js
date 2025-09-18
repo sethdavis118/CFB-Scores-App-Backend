@@ -14,6 +14,14 @@ export async function GetTeamById(id) {
   return team;
 }
 
+export async function GetTeamByTeamId(team_id) {
+  const sql = "SELECT * FROM teams WHERE team_id = $1";
+  const {
+    rows: [team],
+  } = await db.query(sql, [team_id]);
+  return team;
+}
+
 export async function GetTeamsByConference() {
   const sql = "SELECT * FROM teams WHERE conference = $1";
   const { rows: teams } = await db.query(sql, [conference]);

@@ -7,6 +7,7 @@ import {
   GetTeams,
   GetTeamById,
   GetTeamsByConference,
+  GetTeamByTeamId,
 } from "#src/queries/teams";
 //all teams
 router.route("/").get(async (req, res) => {
@@ -18,6 +19,17 @@ router.route("/conference/:conference").get(async (req, res) => {
   try {
     const teams = await GetTeamsByConference(req.params.conference);
     res.send(teams);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server error");
+  }
+});
+
+// I added this so teams can be fetched from games. -Seth
+router.route("/team_id/:team_id").get(async (req, res) => {
+  try {
+    const team = await GetTeamByTeamId(req.params.team_id);
+    res.send(team);
   } catch (error) {
     console.log(error);
     res.status(500).send("Server error");
