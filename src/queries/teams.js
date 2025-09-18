@@ -1,12 +1,12 @@
 import db from "../db/client.js";
 
-export async function getTeams() {
+export async function GetTeams() {
   const sql = "SELECT * FROM teams";
   const { rows: teams } = await db.query(sql);
   return teams;
 }
 
-export async function getTeamById(id) {
+export async function GetTeamById(id) {
   const sql = "SELECT * FROM teams WHERE id = $1";
   const {
     rows: [team],
@@ -22,7 +22,7 @@ export async function GetTeamByTeamId(team_id) {
   return team;
 }
 
-export async function getTeamsByConference() {
+export async function GetTeamsByConference() {
   const sql = "SELECT * FROM teams WHERE conference = $1";
   const { rows: teams } = await db.query(sql, [conference]);
   return teams;

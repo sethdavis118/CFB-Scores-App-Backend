@@ -1,12 +1,12 @@
 import db from "../db/client.js";
 
-export async function getGames() {
+export async function GetGames() {
   const sql = ` SELECT * FROM games`;
   const { rows: games } = await db.query(sql);
   return games;
 }
 
-export async function getGame(id) {
+export async function GetGameById(id) {
   const sql = `SELECT * FROM games WHERE id = $1`;
   const game = await db.query(sql, [id]);
   return game;
