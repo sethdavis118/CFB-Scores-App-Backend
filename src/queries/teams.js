@@ -60,7 +60,6 @@ export async function CreateTeam(
       "{" + logos + "}",
       home_location_id,
     ]);
-    console.log(`CreateTeam call after INSERT {${team}}`);
     return team;
   } catch (e) {
     console.error(e);

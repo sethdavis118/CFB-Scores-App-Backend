@@ -1,4 +1,4 @@
-const scoreboard = [
+const scoreboardList = [
   {
     id: 401752708,
     startDate: "2025-09-20T16:00:00.000Z",
@@ -3087,4 +3087,4 @@ const scoreboard = [
     },
   },
 ];
-export default scoreboad;
+export default scoreboardList;
