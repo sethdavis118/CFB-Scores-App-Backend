@@ -18,12 +18,14 @@ import usersRouter from "./api/users.js";
 import gamesRouter from "./api/games.js";
 import teamsRouter from "./api/teams.js";
 import oddsRouter from "./api/odds.js";
+import futureGameRouter from "./api/future_games.js";
 import rankingsRouter from "./api/rankings.js";
 
 app.use("/users", usersRouter);
 app.use("/games", gamesRouter);
 app.use("/teams", teamsRouter);
 app.use("/odds", oddsRouter);
+app.use("/upcoming", futureGameRouter);
 app.use("/rankings", rankingsRouter);
 
 app.use((err, req, res, next) => {
