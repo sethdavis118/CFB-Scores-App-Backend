@@ -54,11 +54,11 @@ CREATE TABLE scoreboards (
     situation TEXT,
     possesion TEXT,
     last_play TEXT,
-    venue TEXT [],
-    home_team TEXT [],
-    away_team TEXT [],
-    weather TEXT [],
-    betting TEXT []
+    venue JSON,
+    home_team JSON,
+    away_team JSON,
+    weather JSON,
+    betting JSON
 );
 --     CREATE TABLE users (
 --     id SERIAL PRIMARY KEY,
