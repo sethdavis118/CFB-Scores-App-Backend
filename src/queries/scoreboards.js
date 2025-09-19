@@ -36,7 +36,7 @@ export async function createScoreboard(sb) {
     ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
       RETURNING *
     `;
-    console.log(sql);
+    //console.log(sql);
     const { rows: scoreb } = await db.query(sql, [
       sb.id,
       sb.startDate,
@@ -49,16 +49,14 @@ export async function createScoreboard(sb) {
       sb.situation,
       sb.possesion,
       sb.lastPlay,
-      `{${sb.venue}}`,
-      `{${sb.homeTeam}}`,
-      `{${sb.awayTeam}}`,
-      `{${sb.weather}}`,
-      `{${sb.betting}}`,
+      sb.venue,
+      sb.homeTeam,
+      sb.awayTeam,
+      sb.weather,
+      sb.betting,
     ]);
-    console.log(`sb object begore returning ${sb}`);
     return scoreb;
   } catch (e) {
     console.error(e);
   }
-  console.log(`Test end of CreateScoreboard`);
 }
