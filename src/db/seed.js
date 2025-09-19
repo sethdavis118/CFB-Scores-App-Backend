@@ -22,9 +22,9 @@ async function seed() {
 async function seedTeams() {
   try {
     for (const team of teamList) {
-      console.log(`team.id ${team.id}`);
+      //console.log(`team.id ${team.id}`);
       await createTeam(
-        Number(team.id),
+        team.id,
         team.school,
         team.mascot,
         team.abbreviation,
@@ -45,7 +45,7 @@ async function seedTeams() {
 async function seedGames() {
   try {
     for (const game of gameList) {
-      console.log(`game.id ${game.id}`);
+      //console.log(`game.id ${game.id}`);
       await createGame(
         game.id,
         game.season,
@@ -71,7 +71,7 @@ async function seedGames() {
 async function seedScoreboards() {
   // try {
   for (const sb of scoreboardList) {
-    console.log(`scoreboard.id ${sb.id}`);
+    //console.log(`scoreboard.id ${sb.id}`);
     await createScoreboard(sb);
   }
   //

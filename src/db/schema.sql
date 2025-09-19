@@ -67,16 +67,6 @@ CREATE TABLE scoreboards (
 --     favorite_team REFERENCES teams(id) ON DELETE SET NULL,
 -- );
 
---CREATE TABLE rankings (
---     id SERIAL PRIMARY KEY,
---     poll TEXT
---     rank INT,
---     team_id INT REFERENCES teams(id),
---     school TEXT,
---     conference TEXT,
---     firstPlaceVotes INT,
---     points INT
---);
 
 -- CREATE TABLE favorites (
 --     user_id INT REFERENCES users(id) ON DELETE CASCADE,
