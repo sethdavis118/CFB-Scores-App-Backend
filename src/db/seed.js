@@ -2,6 +2,7 @@ import db from "./client.js";
 import { createTeam } from "../queries/teams.js";
 import { createGame } from "../queries/games.js";
 import { createScoreboard } from "../queries/scoreboards.js";
+import { createUSer } from "#src/queries/users";
 import teamList from "../../CFDTeams.js";
 import gameList from "../../CFDGames.js";
 import scoreboardList from "../../CFDScoreboard.js";
@@ -17,6 +18,7 @@ async function seed() {
   await seedTeams();
   await seedGames();
   await seedScoreboards();
+  await seedUsers();
 }
 
 async function seedTeams() {
@@ -80,3 +82,39 @@ async function seedScoreboards() {
   // }
 }
 // //
+//wrote it to only add a user once created on the front end
+async function seedUsers() {
+  try {
+    const user = await createUSer(
+      user.username,
+      user.email,
+      user.password,
+      user.favorite_team,
+      user.favorite_conference
+    );
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+//can be used to seed user for testing
+// async function seedUsers() {
+//   try {
+//     const user = {
+//       username: "HeWasNumber1",
+//       email: "num1@hotmail",
+//       password: "passW",
+//       favorite_team: "Texas",
+//       favorite_conference: "SEC",
+//     };
+//     await createUSer(
+//       user.username,
+//       user.email,
+//       user.password,
+//       user.favorite_team,
+//       user.favorite_conference
+//     );
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }

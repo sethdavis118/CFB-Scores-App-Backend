@@ -2,18 +2,20 @@ import bcrypt from "bcrypt";
 import db from "#src/db/client";
 
 export async function createUSer(
+  username,
   email,
   password,
   favorite_team = null,
   favorite_conference = null
 ) {
   const sql =
-    "INSERT INTO users (email, password, favorite_team, favorite_conference) VALUES ($1, $2, $3, $4) RETURNING id, email, favorite_team, favorite_conference";
+    "INSERT INTO users (username, email, password, favorite_team, favorite_conference) VALUES ($1, $2, $3, $4, $5) RETURNING *";
 
   const hashedPassword = await bcrypt.hash(password, 10);
   const {
     rows: [user],
   } = await db.query(sql, [
+    username,
     email,
     hashedPassword,
     favorite_team,
@@ -42,4 +44,10 @@ export async function getUserById(id) {
     rows: [user],
   } = await db.query(sql, [id]);
   return user;
+}
+
+export async function getOddsByUser(user_id) {
+  const sql = `SELECT * FROM odds WHERE user_id = $1`;
+  const { rows: odds } = await db.query(sql, [user_id]);
+  return odds;
 }
