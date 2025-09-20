@@ -6,6 +6,9 @@ DROP TABLE IF EXISTS games;
 
 DROP TABLE IF EXISTS scoreboards;
 
+DROP TABLE IF EXISTS users;
+
+
 
 CREATE TABLE
     teams (
@@ -60,12 +63,16 @@ CREATE TABLE scoreboards (
     weather JSON,
     betting JSON
 );
---     CREATE TABLE users (
---     id SERIAL PRIMARY KEY,
---     username VARCHAR(50) UNIQUE NOT NULL,
---     email VARCHAR(100) UNIQUE NOT NULL, 
---     favorite_team REFERENCES teams(id) ON DELETE SET NULL,
--- );
+
+    CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL, 
+    password VARCHAR(50) NOT NULL,
+    favorite_team INT REFERENCES teams(id) ON DELETE SET NULL,
+    favorite_conference TEXT,
+    bets INT []
+    );
 
 --CREATE TABLE rankings (
 --     id SERIAL PRIMARY KEY,
