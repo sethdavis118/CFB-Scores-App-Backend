@@ -81,3 +81,12 @@ export async function updateUserFavorites(id, favorite_team, favorite_conference
   } = await db.query(sql, [id, favorite_team, favorite_conference]);
   return user;
 }
+
+export async function getUserDataByID(id) {
+  const sql = `SELECT id, username, email, favorite_team, favorite_conference, bets FROM users WHERE id = $1`;
+
+  const {
+    rows: [user],
+  } = await db.query(sql, [id]);
+  return user;
+}
