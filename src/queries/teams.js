@@ -22,17 +22,18 @@ export async function GetTeamByTeamId(team_id) {
   return team;
 }
 
-export async function GetTeamsByConference() {
+export async function GetTeamsByConference(conference) {
   const sql = "SELECT * FROM teams WHERE conference = $1";
   const { rows: teams } = await db.query(sql, [conference]);
   return teams;
 }
 
+
 export async function createTeam(
   team_id,
   school,
   mascot,
-  abbreviaion,
+  abbreviation,
   conference,
   division,
   classification,
@@ -61,7 +62,7 @@ export async function createTeam(
       team_id,
       school,
       mascot,
-      abbreviaion,
+      abbreviation,
       conference,
       division,
       classification,
@@ -74,4 +75,10 @@ export async function createTeam(
   } catch (e) {
     console.error(e);
   }
+}
+export async function GetConferences() {
+  const sql = "SELECT DISTINCT conference FROM teams ORDER BY conference";
+  const { rows } = await db.query(sql);
+
+  return rows.map((row) => row.conference);
 }

@@ -28,7 +28,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "db:schema": "psql -d cfbodds -f ./src/db/schema.sql",
+    "db:schema": "psql -U postgres -d cfbodds -f ./src/db/schema.sql",
     "db:seed": "node --env-file=.env ./src/db/seed.js",
     "db:seed-debug": "nodemon --inspect --env-file=.env ./src/db/seed.js",
     "db:reset": "npm run db:schema && npm run db:seed",
