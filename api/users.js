@@ -2,8 +2,9 @@ import express from "express";
 const router = express.Router();
 export default router;
 import requireBody from "#middleware/requireBody";
-import { createUSer, getUserByEmailAndPassword, getUserDataByEmailAndPassword } from "#src/queries/users";
-import { createToken } from "#utils/jwt";
+import requireUser from "#middleware/requireUser";
+import { createUSer, getUserByEmailAndPassword, getUserById } from "#src/queries/users";
+import { createToken, verifyToken } from "#utils/jwt";
 
 // router
 //   .route("/register")
@@ -80,15 +81,24 @@ router.post("/login", requireBody(["email", "password"]), async (req, res) => {
 });
 
 
-router.post("/me", requireBody(["email", "password"]), async (req, res) => {
-  const { email, password } = req.body;
-  console.log(email, password);
-  const user = await getUserDataByEmailAndPassword(email, password);
+router.get("/me", async (req, res) => {
+  try {
+    const authHeader = req.headers["authorization"];
+    if (!authHeader) {
+      return res.status(401).json({ error: "No token provided" });
+    }
+    const token = authHeader.split(" ")[1]; // read more about what this does -Evan 
+    const payload = verifyToken(token);
 
+    const user = await getUserById(payload.id);
     if (!user) {
-    return res.status(401).json({ error: "Invalid email, password, or both." });
+      return res.status(404).json({ error: "User not found" });
+    }
+    const { password, ...safeUser } = user;
+
+    res.json(safeUser);
+  } catch (err) {
+    console.error("Auth error:", err);
+    res.status(401).json({ error: "Invalid token" });
   }
-
-  return res.status(201).send(user);
-})
-
+});
