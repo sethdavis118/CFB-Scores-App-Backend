@@ -42,7 +42,31 @@ CREATE TABLE
         away_qtr_scores INT []
     );
 
-CREATE TABLE scoreboards (
+CREATE TABLE users {
+    user_id SERIAL PRIMARY KEY
+    username TEXT NOT NULL,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    password TEXT NOT NULL
+}
+
+CREATE TABLE user_bets {
+    id SERIAL PRIMARY KEY,
+    user_id INT,
+    game_id INT,
+    amount INT,
+    time_stamp TIMESTAMP WITH TIME ZONE DEFAULT (CURRENT_TIMESTAMP)
+    [CONSTRAINT fk_user_id]
+        FOREIGN KEY(user_id)
+        REFERENCES users(user_id)
+        ON DELETE CASCADE
+    [CONSTRAINT fk_game_id]
+        FOREIGN KEY(game_id
+        REFERENCES games(game_id))
+}
+
+/* CREATE TABLE scoreboards (
     game_id INT PRIMARY KEY,
     start_date DATE,
     start_time_tbd BOOLEAN,
@@ -59,13 +83,7 @@ CREATE TABLE scoreboards (
     away_team JSON,
     weather JSON,
     betting JSON
-);
---     CREATE TABLE users (
---     id SERIAL PRIMARY KEY,
---     username VARCHAR(50) UNIQUE NOT NULL,
---     email VARCHAR(100) UNIQUE NOT NULL, 
---     favorite_team REFERENCES teams(id) ON DELETE SET NULL,
--- );
+); */
 
 --CREATE TABLE rankings (
 --     id SERIAL PRIMARY KEY,

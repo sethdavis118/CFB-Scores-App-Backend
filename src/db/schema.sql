@@ -89,6 +89,8 @@ CREATE TABLE scoreboards (
 --     created_at TIMESTAMP DEFAULT NOW()
 -- );
 
+
+=======
 CREATE TABLE rankings (
     id SERIAL PRIMARY KEY,
     poll TEXT,
@@ -99,6 +101,7 @@ CREATE TABLE rankings (
     firstPlaceVotes INT,
     points INT
 );
+
 
 -- CREATE TABLE favorites (
 --     user_id INT REFERENCES users(id) ON DELETE CASCADE,

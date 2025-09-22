@@ -1,10 +1,11 @@
 import db from "./client.js";
 import { createTeam } from "../queries/teams.js";
-import { createGame } from "../queries/games.js";
-import { createScoreboard } from "../queries/scoreboards.js";
-import { createUSer } from "#src/queries/users";
+
+import { createGame, getGamesByYear } from "../queries/games.js";
+import { createScoreboard, getScoreboard } from "../queries/scoreboards.js";
+
 import teamList from "../../CFDTeams.js";
-import gameList from "../../CFDGames.js";
+//import gameList from "../../CFDGames.js";
 import scoreboardList from "../../CFDScoreboard.js";
 import conferenceList from "../../CFDConferences.js";
 //import gameList from "../../ncaafevents.json";
@@ -17,16 +18,18 @@ console.log("🌱 Database seeded.");
 async function seed() {
   await seedTeams();
   await seedGames();
-  await seedScoreboards();
-  await seedUsers();
+
+  //await seedScoreboards();
 }
+
+const API = process.env.API;
 
 async function seedTeams() {
   try {
     for (const team of teamList) {
-      console.log(`team.id ${team.id}`);
+      //console.log(`team.id ${team.id}`);
       await createTeam(
-        Number(team.id),
+        team.id,
         team.school,
         team.mascot,
         team.abbreviation,
@@ -46,8 +49,9 @@ async function seedTeams() {
 
 async function seedGames() {
   try {
-    for (const game of gameList) {
-      console.log(`game.id ${game.id}`);
+    const gameYear = await getGamesByYear(2025);
+    for (const game of gameYear) {
+      //console.log(`game.id ${game.id}`);
       await createGame(
         game.id,
         game.season,
@@ -58,10 +62,10 @@ async function seedGames() {
         game.neutralSite,
         game.conferenceGame,
         game.homeId,
-        game.homePoints,
+        game.homePoints ? null : 0,
         game.homeLineScores,
         game.awayId,
-        game.awayPoints,
+        game.awayPoints ? null : 0,
         game.awayLineScores
       );
     }
@@ -71,15 +75,14 @@ async function seedGames() {
 }
 
 async function seedScoreboards() {
-  // try {
-  for (const sb of scoreboardList) {
-    console.log(`scoreboard.id ${sb.id}`);
-    await createScoreboard(sb);
+  try {
+    for (const sb of scoreboardList) {
+      const scoreb = await getScoreboard();
+      await createScoreboard(sb);
+    }
+  } catch (e) {
+    console.error(e);
   }
-  //
-
-  // console.error(e);
-  // }
 }
 // //
 
@@ -104,3 +107,4 @@ async function seedScoreboards() {
 //     console.error(error);
 //   }
 // }
+
