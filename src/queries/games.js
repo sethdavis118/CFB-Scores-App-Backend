@@ -21,28 +21,28 @@ export async function GetGamesByTeam(team_id) {
 
 export async function GetGamesByWeek(season_week) {
   const sql = `SELECT * FROM games WHERE season_week = $1`;
-  const {
-    rows: [games],
-  } = await db.query(sql, [season_week]);
+  const { rows: games } = await db.query(sql, [season_week]);
   return games;
 }
+//no conference in games table, will adjust if needed
+// export async function GetGamesByConference(conference) {
+//   const sql = `SELECT * FROM games
+//     JOIN teams AS home_team ON games.home_team_id = home_team.id
+//     JOIN teams AS away_team ON games.away_team_id = away_team.id
+//     WHERE home_team.conference = $1 OR away_team.conference = $1`;
+//   const { rows: games } = await db.query(sql, [conference]);
+//   return games;
+// }
 
-export async function GetGamesByConference(conference) {
-  const sql = `SELECT * FROM games 
-    JOIN teams AS home_team ON games.home_team_id = home_team.id
-    JOIN teams AS away_team ON games.away_team_id = away_team.id
-    WHERE home_team.conference = $1 OR away_team.conference = $1`;
-  const {
-    rows: [games],
-  } = await db.query(sql, [conference]);
-  return games;
-}
+// export async function GetGamesBySeason(season) {
+//   const sql = `SELECT * FROM games WHERE season = $1`;
+//   const { rows: games } = await db.query(sql, [season]);
+//   return games;
+// }
 
 export async function GetGamesBySeasonType(season_type) {
   const sql = `SELECT * FROM games WHERE season_type = $1`;
-  const {
-    rows: [games],
-  } = await db.query(sql, [season_type]);
+  const { rows: games } = await db.query(sql, [season_type]);
   return games;
 }
 

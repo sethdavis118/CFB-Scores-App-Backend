@@ -1,7 +1,9 @@
 import db from "./client.js";
 import { createTeam } from "../queries/teams.js";
+
 import { createGame, getGamesByYear } from "../queries/games.js";
 import { createScoreboard, getScoreboard } from "../queries/scoreboards.js";
+
 import teamList from "../../CFDTeams.js";
 //import gameList from "../../CFDGames.js";
 import scoreboardList from "../../CFDScoreboard.js";
@@ -16,6 +18,7 @@ console.log("🌱 Database seeded.");
 async function seed() {
   await seedTeams();
   await seedGames();
+
   //await seedScoreboards();
 }
 
@@ -30,8 +33,8 @@ async function seedTeams() {
         team.school,
         team.mascot,
         team.abbreviation,
-        team.division,
         team.conference,
+        team.division,
         team.classification,
         team.color,
         team.alternateColor,
@@ -81,3 +84,27 @@ async function seedScoreboards() {
     console.error(e);
   }
 }
+// //
+
+//can be used to seed user for testing
+// async function seedUsers() {
+//   try {
+//     const user = {
+//       username: "HeWasNumber1",
+//       email: "num1@hotmail",
+//       password: "passW",
+//       favorite_team: "Texas",
+//       favorite_conference: "SEC",
+//     };
+//     await createUSer(
+//       user.username,
+//       user.email,
+//       user.password,
+//       user.favorite_team,
+//       user.favorite_conference
+//     );
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
+
