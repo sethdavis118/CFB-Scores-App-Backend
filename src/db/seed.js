@@ -82,20 +82,6 @@ async function seedScoreboards() {
   // }
 }
 // //
-//wrote it to only add a user once created on the front end
-async function seedUsers() {
-  try {
-    const user = await createUSer(
-      user.username,
-      user.email,
-      user.password,
-      user.favorite_team,
-      user.favorite_conference
-    );
-  } catch (error) {
-    console.error(error);
-  }
-}
 
 //can be used to seed user for testing
 // async function seedUsers() {
