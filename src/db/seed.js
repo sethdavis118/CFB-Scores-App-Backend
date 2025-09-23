@@ -6,7 +6,6 @@ import { createScoreboard, getScoreboard } from "../queries/scoreboards.js";
 
 import teamList from "../../CFDTeams.js";
 //import gameList from "../../CFDGames.js";
-import scoreboardList from "../../CFDScoreboard.js";
 import conferenceList from "../../CFDConferences.js";
 //import gameList from "../../ncaafevents.json";
 //import oddsList from "../../oddsspreads.json";

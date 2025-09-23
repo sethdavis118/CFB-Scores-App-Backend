@@ -72,7 +72,6 @@ CREATE TABLE user_bets (
     CONSTRAINT fk_game_id
         FOREIGN KEY (game_id)
         REFERENCES games(game_id)
-);
 
 
     CREATE TABLE users (
@@ -132,5 +131,3 @@ CREATE TABLE rankings (
 --     team_id INT REFERENCES teams(id) ON DELETE CASCADE,
 --     PRIMARY KEY (user_id, team_id)
 -- );
-
-COMMIT;
