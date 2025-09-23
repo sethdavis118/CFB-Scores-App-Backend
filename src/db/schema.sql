@@ -54,7 +54,7 @@ CREATE TABLE users (
     password VARCHAR(50) NOT NULL,
     favorite_team INT REFERENCES teams(id) ON DELETE SET NULL,
     favorite_conference TEXT,
-    bets JSON,
+    bets INT [],
     active BOOLEAN DEFAULT true
     );
 

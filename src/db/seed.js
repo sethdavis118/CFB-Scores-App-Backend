@@ -8,7 +8,7 @@ import scoreboardList from "../../CFDScoreboard.js";
 import conferenceList from "../../CFDConferences.js";
 //import gameList from "../../ncaafevents.json";
 //import oddsList from "../../oddsspreads.json";
-//import { Register } from "#db/queries/users";
+
 await db.connect();
 await seed();
 await db.end();
@@ -26,8 +26,8 @@ async function seedTeams() {
         team.school,
         team.mascot,
         team.abbreviation,
-        team.division,
         team.conference,
+        team.division,
         team.classification,
         team.color,
         team.alternateColor,
@@ -52,10 +52,10 @@ async function seedGames() {
         game.neutralSite,
         game.conferenceGame,
         game.homeId,
-        game.homePoints ? null : 0,
-        game.homeLineScores ? null : 0,
+        game.homePoints, //? null : 0,
+        game.homeLineScores, //? null : 0,
         game.awayId,
-        game.awayPoints ? null : 0,
+        game.awayPoints, //? null : 0,
         game.awayLineScores
       );
     }
@@ -63,14 +63,14 @@ async function seedGames() {
     console.error(e);
   }
 }
-async function seedScoreboards() {
-  // try {
-  for (const sb of scoreboardList) {
-    console.log(`scoreboard.id ${sb.id}`);
-    await createScoreboard(sb);
-  }
-  //
-  // console.error(e);
-  // }
-}
-// //
+// async function seedScoreboards() {
+//   // try {
+//   for (const sb of scoreboardList) {
+//     console.log(`scoreboard.id ${sb.id}`);
+//     await createScoreboard(sb);
+//   }
+//   //
+//   // console.error(e);
+//   // }
+// }
+// // //
