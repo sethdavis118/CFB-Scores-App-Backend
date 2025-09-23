@@ -3,7 +3,14 @@ const router = express.Router();
 export default router;
 // import requireUser from "#middleware/requireUser";
 // import { getGamesByYear } from "#/db/queries/games";
-import { GetGames, GetGameById } from "#src/queries/games";
+import {
+  GetGames,
+  GetGameById,
+  GetGamesByWeek,
+  getGamesByYear,
+  GetGamesBySeasonType,
+  GetGamesByYearAndWeek,
+} from "#src/queries/games";
 
 //all games
 router.route("/").get(async (req, res) => {
@@ -45,6 +52,12 @@ router.route("/").get(async (req, res) => {
   res.send(games);
 });
 
+//games by year and week
+router.route("/year/:year/week/:week").get(async (req, res) => {
+  const games = await GetGamesByYearAndWeek(req.params.year, req.params.week);
+  res.send(games);
+});
+
 //games by id
 router.param("id", async (req, res, next, id) => {
   const game = await GetGameById(id);
@@ -66,10 +79,6 @@ router.route("/games/teams/:id").get(async (req, res) => {
   const games = await GetGamesByTeam(req.params.id);
   res.send(games);
 });
-//games by week
-router.route("/games/week/:id").get(async (req, res) => {
-  const games = await GetGamesByWeek(req.params.id);
-});
 //games by team
 router.route("/teams/:id").get(async (req, res) => {
   const games = await GetGamesByTeam(req.params.id);
@@ -78,30 +87,19 @@ router.route("/teams/:id").get(async (req, res) => {
 //games by week
 router.route("/week/:id").get(async (req, res) => {
   const games = await GetGamesByWeek(req.params.id);
-
+  console.log(req.params.id);
   res.send(games);
 });
 
 //games by conference
-// router.route("/conference/:id").get(requireUser, async (req, res) => {
-//   const games = await GetGamesByConference(req.params.id);
+// router.route("/conference/:conference").get(async (req, res) => {
+//   const games = await GetGamesByConference(req.params.conference);
 //   res.send(games);
 // });
 
 //games by season type
-
-router.route("/games/seasonType/:id").get(async (req, res) => {
-  const games = await getGamesBySeasonType(req.params.id);
-  res.send(games);
-});
-//games by conference
-router.route("/games/conference/:id").get(async (req, res) => {
-  const games = await getGamesByConference(req.params.id);
-  res.send(games);
-});
-
-router.route("/season/:id").get(async (req, res) => {
-  const games = await GetGamesBySeasonType(req.params.id);
+router.route("/season/:season").get(async (req, res) => {
+  const games = await GetGamesBySeasonType(req.params.season_type);
   res.send(games);
 });
 

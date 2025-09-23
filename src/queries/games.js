@@ -24,6 +24,13 @@ export async function GetGamesByWeek(season_week) {
   const { rows: games } = await db.query(sql, [season_week]);
   return games;
 }
+
+export async function getGamesByYear(year) {
+  const sql = `SELECT * FROM games WHERE season = $1`;
+  const { rows: games } = await db.query(sql, [year]);
+  return games;
+}
+
 //no conference in games table, will adjust if needed
 // export async function GetGamesByConference(conference) {
 //   const sql = `SELECT * FROM games
@@ -34,15 +41,15 @@ export async function GetGamesByWeek(season_week) {
 //   return games;
 // }
 
-// export async function GetGamesBySeason(season) {
-//   const sql = `SELECT * FROM games WHERE season = $1`;
-//   const { rows: games } = await db.query(sql, [season]);
-//   return games;
-// }
-
 export async function GetGamesBySeasonType(season_type) {
   const sql = `SELECT * FROM games WHERE season_type = $1`;
   const { rows: games } = await db.query(sql, [season_type]);
+  return games;
+}
+
+export async function GetGamesByYearAndWeek(year, week) {
+  const sql = `SELECT * FROM games WHERE season = $1 AND season_week = $2`;
+  const { rows: games } = await db.query(sql, [year, week]);
   return games;
 }
 
