@@ -8,24 +8,12 @@ import {
   GetTeamById,
   GetTeamsByConference,
   GetTeamByTeamId,
-  GetConferences,
 } from "#src/queries/teams";
 //all teams
 router.route("/").get(async (req, res) => {
   const teams = await GetTeams();
   res.send(teams);
 });
-
-router.route("/conferences").get(async (req, res) => {
-  try {
-    const conferences = await GetConferences();
-    res.send(conferences);
-  } catch (error) {
-    console.error("Error fetching conferences:", error);
-    res.status(500).send("Server error");
-  }
-});
-
 //teams by conference
 router.route("/conference/:conference").get(async (req, res) => {
   try {
@@ -47,7 +35,6 @@ router.route("/team_id/:team_id").get(async (req, res) => {
     res.status(500).send("Server error");
   }
 });
-
 //teams by id
 router.param("id", async (req, res, next, id) => {
   const team = await GetTeamById(id);
@@ -59,7 +46,3 @@ router.param("id", async (req, res, next, id) => {
 router.route("/:id").get((req, res) => {
   res.send(req.team);
 });
-
-
-
-
