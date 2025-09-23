@@ -6,6 +6,7 @@ import requireBody from "#middleware/requireBody";
 import {
   GetTeams,
   GetTeamById,
+  GetTeamsByYear,
   GetTeamsByConference,
   GetTeamByTeamId,
   GetConferences,
@@ -37,6 +38,15 @@ router.route("/conference/:conference").get(async (req, res) => {
   }
 });
 
+router.route("/year/:year").get(async (req, res) => {
+  try {
+    const teams = await GetTeamsByYear(req.params.year);
+    res.send(teams);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server error");
+  }
+});
 // I added this so teams can be fetched from games. -Seth
 router.route("/team_id/:team_id").get(async (req, res) => {
   try {
@@ -59,7 +69,3 @@ router.param("id", async (req, res, next, id) => {
 router.route("/:id").get((req, res) => {
   res.send(req.team);
 });
-
-
-
-

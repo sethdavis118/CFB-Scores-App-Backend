@@ -28,7 +28,16 @@ export async function GetTeamsByConference(conference) {
   return teams;
 }
 
-
+export async function GetTeamsByYear(year) {
+  const sql = `
+    SELECT DISTINCT t.*
+    FROM teams t
+    JOIN games g ON t.id = g.home_team_id OR t.id = g.away_team_id
+    WHERE g.season = $1
+  `;
+  const { rows: teams } = await db.query(sql, [year]);
+  return teams;
+}
 export async function createTeam(
   team_id,
   school,
