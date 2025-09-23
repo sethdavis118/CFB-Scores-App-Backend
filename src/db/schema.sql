@@ -1,26 +1,17 @@
-BEGIN TRANSACTION;
-
-DROP TABLE IF EXISTS user_bets CASCADE;
-
 DROP TABLE IF EXISTS teams CASCADE;
-
-
-DROP TABLE IF EXISTS users;
-
 
 DROP TABLE IF EXISTS games;
 
-
-
-
-
 DROP TABLE IF EXISTS users;
 
-DROP TABLE IF EXISTS bets;
+DROP TABLE IF EXISTS user_bets CASCADE;
+
+-- DROP TABLE IF EXISTS bets;
 
 DROP TABLE IF EXISTS rankings;
 
-DROP TABLE IF EXISTS favorites;
+-- DROP TABLE IF EXISTS favorites;
+
 
 CREATE TABLE
     teams (
@@ -29,15 +20,14 @@ CREATE TABLE
         school TEXT,
         mascot TEXT,
         abbreviation TEXT,
-        division TEXT,
         conference TEXT,
+        division TEXT,
         classification TEXT,
         color TEXT,
         alternate_color TEXT,
-        logos TEXT [],
+        logos JSON,
         home_location_id INT
     );
-
 CREATE TABLE
     games (
         id SERIAL PRIMARY KEY,
@@ -57,25 +47,6 @@ CREATE TABLE
         away_qtr_scores INT []
     );
 
-/* CREATE TABLE scoreboards (
-    game_id INT PRIMARY KEY,
-    start_date DATE,
-    start_time_tbd BOOLEAN,
-    tv TEXT,
-    neutral_site BOOLEAN,
-    game_status TEXT,
-    game_period TEXT,
-    clock TEXT,
-    situation TEXT,
-    possesion TEXT,
-    last_play TEXT,
-    venue JSON,
-    home_team JSON,
-    away_team JSON,
-    weather JSON,
-    betting JSON
-
-); */
 CREATE TABLE users (
     user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -110,9 +81,26 @@ CREATE TABLE user_bets (
     username VARCHAR(100) UNIQUE NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL, 
     password VARCHAR(100) NOT NULL,
-    favorite_team INT REFERENCES teams(id) ON DELETE SET NULL,
+    favorite_team INT,
     favorite_conference TEXT,
     bets INT []
+    );
+    
+    CREATE TABLE user_bets (
+    id SERIAL PRIMARY KEY,
+    user_id INT,
+    game_id INT,
+    amount INT,
+    betting JSON,
+    time_stamp TIMESTAMP WITH TIME ZONE DEFAULT (CURRENT_TIMESTAMP),
+  UNIQUE (user_id, game_id),
+    CONSTRAINT fk_user_id
+        FOREIGN KEY(user_id)
+        REFERENCES users(user_id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_game_id
+        FOREIGN KEY(game_id)
+        REFERENCES games(id)
     );
 
 --     CREATE TABLE bets (
