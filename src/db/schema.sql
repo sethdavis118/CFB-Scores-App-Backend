@@ -72,34 +72,9 @@ CREATE TABLE user_bets (
     CONSTRAINT fk_game_id
         FOREIGN KEY (game_id)
         REFERENCES games(game_id)
+);
 
-
-    CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    username VARCHAR(100) UNIQUE NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL, 
-    password VARCHAR(100) NOT NULL,
-    favorite_team INT,
-    favorite_conference TEXT,
-    bets INT []
-    );
     
-    CREATE TABLE user_bets (
-    id SERIAL PRIMARY KEY,
-    user_id INT,
-    game_id INT,
-    amount INT,
-    betting JSON,
-    time_stamp TIMESTAMP WITH TIME ZONE DEFAULT (CURRENT_TIMESTAMP),
-  UNIQUE (user_id, game_id),
-    CONSTRAINT fk_user_id
-        FOREIGN KEY(user_id)
-        REFERENCES users(user_id)
-        ON DELETE CASCADE,
-    CONSTRAINT fk_game_id
-        FOREIGN KEY(game_id)
-        REFERENCES games(id)
-    );
 
 --     CREATE TABLE bets (
 --     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
