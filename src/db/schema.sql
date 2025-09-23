@@ -16,7 +16,7 @@ CREATE TABLE
         classification TEXT,
         color TEXT,
         alternate_color TEXT,
-        logos TEXT [],
+        logos JSON,
         home_location_id INT
     );
 CREATE TABLE
