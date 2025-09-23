@@ -6,13 +6,6 @@ DROP TABLE IF EXISTS games;
 
 DROP TABLE IF EXISTS scoreboards;
 
-DROP TABLE IF EXISTS users;
-
-DROP TABLE IF EXISTS bets;
-
-DROP TABLE IF EXISTS rankings;
-
-DROP TABLE IF EXISTS favorites;
 
 CREATE TABLE
     teams (
@@ -21,8 +14,8 @@ CREATE TABLE
         school TEXT,
         mascot TEXT,
         abbreviation TEXT,
-        division TEXT,
         conference TEXT,
+        division TEXT,
         classification TEXT,
         color TEXT,
         alternate_color TEXT,
@@ -67,41 +60,23 @@ CREATE TABLE scoreboards (
     weather JSON,
     betting JSON
 );
-
-    CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    username VARCHAR(100) UNIQUE NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL, 
-    password VARCHAR(100) NOT NULL,
-    favorite_team INT REFERENCES teams(id) ON DELETE SET NULL,
-    favorite_conference TEXT,
-    bets INT []
-    );
-
---     CREATE TABLE bets (
---     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
---     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
---     game_id UUID REFERENCES games(id) ON DELETE CASCADE,
---     wager_amount NUMERIC(10,2) NOT NULL, -- amount user is betting
---     team_id INT REFERENCES teams(id),    -- which team the user is betting on
---     spread NUMERIC(5,2),                 -- e.g. -7.5, +3.0
---     odds NUMERIC(6,3),                   -- e.g. -110, +150
---     created_at TIMESTAMP DEFAULT NOW()
+--     CREATE TABLE users (
+--     id SERIAL PRIMARY KEY,
+--     username VARCHAR(50) UNIQUE NOT NULL,
+--     email VARCHAR(100) UNIQUE NOT NULL, 
+--     favorite_team REFERENCES teams(id) ON DELETE SET NULL,
 -- );
 
-
-=======
-CREATE TABLE rankings (
-    id SERIAL PRIMARY KEY,
-    poll TEXT,
-    rank INT,
-    team_id INT REFERENCES teams(id),
-    school TEXT,
-    conference TEXT,
-    firstPlaceVotes INT,
-    points INT
-);
-
+--CREATE TABLE rankings (
+--     id SERIAL PRIMARY KEY,
+--     poll TEXT
+--     rank INT,
+--     team_id INT REFERENCES teams(id),
+--     school TEXT,
+--     conference TEXT,
+--     firstPlaceVotes INT,
+--     points INT
+--);
 
 -- CREATE TABLE favorites (
 --     user_id INT REFERENCES users(id) ON DELETE CASCADE,
