@@ -37,14 +37,18 @@ CREATE TABLE
         away_points INT NOT NULL,
         away_qtr_scores INT []
     );
+
 CREATE TABLE users (
-    user_id SERIAL PRIMARY KEY,
-    username TEXT NOT NULL,
-    first_name TEXT NOT NULL,
-    last_name TEXT NOT NULL,
-    email TEXT NOT NULL,
-    password TEXT NOT NULL
+    user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL, 
+    password VARCHAR(50) NOT NULL,
+    favorite_team INT REFERENCES teams(id) ON DELETE SET NULL,
+    favorite_conference TEXT,
+    bets INT [],
+    active BOOLEAN DEFAULT true
     );
+
 CREATE TABLE user_bets (
     id SERIAL PRIMARY KEY,
     user_id INT,
