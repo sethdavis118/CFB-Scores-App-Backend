@@ -1,18 +1,9 @@
-DROP TABLE IF EXISTS teams CASCADE;
 
-DROP TABLE IF EXISTS games;
-
-DROP TABLE IF EXISTS users;
-
+BEGIN TRANSACTION;
 DROP TABLE IF EXISTS user_bets CASCADE;
-
--- DROP TABLE IF EXISTS bets;
-
-DROP TABLE IF EXISTS rankings;
-
--- DROP TABLE IF EXISTS favorites;
-
-
+DROP TABLE IF EXISTS teams CASCADE;
+DROP TABLE IF EXISTS games CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE
     teams (
         id SERIAL PRIMARY KEY,
@@ -25,13 +16,13 @@ CREATE TABLE
         classification TEXT,
         color TEXT,
         alternate_color TEXT,
-        logos TEXT [],
+        logos JSON,
         home_location_id INT
     );
 CREATE TABLE
     games (
         id SERIAL PRIMARY KEY,
-        game_id INT UNIQUE,
+        game_id INT,
         season INT,
         season_week INT,
         season_type TEXT,
@@ -46,63 +37,29 @@ CREATE TABLE
         away_points INT NOT NULL,
         away_qtr_scores INT []
     );
-
 CREATE TABLE users (
-    user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    username VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL, 
-    password VARCHAR(50) NOT NULL,
-    favorite_team INT REFERENCES teams(id) ON DELETE SET NULL,
-    favorite_conference TEXT,
-    bets INT [],
-    active BOOLEAN DEFAULT true
+    user_id SERIAL PRIMARY KEY,
+    username TEXT NOT NULL,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    password TEXT NOT NULL
+    );
+CREATE TABLE user_bets (
+    id SERIAL PRIMARY KEY,
+    user_id INT,
+    game_id INT,
+    amount INT,
+    betting JSON,
+    time_stamp TIMESTAMP WITH TIME ZONE DEFAULT (CURRENT_TIMESTAMP),
+  UNIQUE (user_id, game_id),
+    CONSTRAINT fk_user_id
+        FOREIGN KEY(user_id)
+        REFERENCES users(user_id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_game_id
+        FOREIGN KEY(game_id)
+        REFERENCES games(id)
     );
 
-CREATE TABLE user_bets (
-    id  UUID DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL,
-    game_id INT NOT NULL,
-    amount INT,
-    spread INT,
-    bet_created TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY(id),
-    CONSTRAINT fk_user_id
-        FOREIGN KEY (user_id)
-        REFERENCES users(user_id),
-    CONSTRAINT fk_game_id
-        FOREIGN KEY (game_id)
-        REFERENCES games(game_id)
-);
-
-    
-
---     CREATE TABLE bets (
---     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
---     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
---     game_id UUID REFERENCES games(id) ON DELETE CASCADE,
---     wager_amount NUMERIC(10,2) NOT NULL, -- amount user is betting
---     team_id INT REFERENCES teams(id),    -- which team the user is betting on
---     spread NUMERIC(5,2),                 -- e.g. -7.5, +3.0
---     odds NUMERIC(6,3),                   -- e.g. -110, +150
---     created_at TIMESTAMP DEFAULT NOW()
--- );
-
-
-
-CREATE TABLE rankings (
-    id SERIAL PRIMARY KEY,
-    poll TEXT,
-    rank INT,
-    team_id INT REFERENCES teams(id),
-    school TEXT,
-    conference TEXT,
-    firstPlaceVotes INT,
-    points INT
-);
-
-
--- CREATE TABLE favorites (
---     user_id INT REFERENCES users(id) ON DELETE CASCADE,
---     team_id INT REFERENCES teams(id) ON DELETE CASCADE,
---     PRIMARY KEY (user_id, team_id)
--- );
+TRUNCATE user_bets, teams, games, users RESTART IDENTITY CASCADE;
