@@ -1,9 +1,9 @@
 import db from "#src/db/client";
 
-export async function createBet(user_id, game_id, amount, betting) {
+export async function createBet(user_id, gameId, amount, spread) {
   const sql =
-    "INSERT INTO user_bets (user_id, game_id, amount, betting) VALUES ($1, $2, $3, $4) RETURNING *";
-  const bet = await db.query(sql, [user_id, game_id, amount, betting]);
+    "INSERT INTO user_bets (user_id, game_id, amount, odds) VALUES ($1, $2, $3, $4) RETURNING *";
+  const bet = await db.query(sql, [user_id, gameId, amount, spread]);
   return bet;
 }
 

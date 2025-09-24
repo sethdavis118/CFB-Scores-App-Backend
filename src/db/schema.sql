@@ -37,18 +37,18 @@ CREATE TABLE games (
     neutral_site BOOLEAN,
     conference_game BOOLEAN,
     home_team_id INT NOT NULL,
-    home_points INT NOT NULL,
+    home_points INT,
     home_qtr_scores INT[],
     away_team_id INT NOT NULL,
-    away_points INT NOT NULL,
+    away_points INT,
     away_qtr_scores INT[]
 );
 CREATE TABLE user_bets (
     id SERIAL PRIMARY KEY,
     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-    game_id INT REFERENCES games(id),
+    game_id INT, -- Had to remove the reference here. It would be nice to fix that eventually. - Seth
     amount INT,
-    betting JSON,
+    odds TEXT,
     time_stamp TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (user_id, game_id)
 );
