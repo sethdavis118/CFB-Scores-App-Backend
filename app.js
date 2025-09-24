@@ -17,14 +17,14 @@ app.use(getUserFromToken);
 import usersRouter from "./api/users.js";
 import gamesRouter from "./api/games.js";
 import teamsRouter from "./api/teams.js";
-import oddsRouter from "./api/odds.js";
+import betsRouter from "./api/bets.js";
 import futureGameRouter from "./api/future_games.js";
 import rankingsRouter from "./api/rankings.js";
 
 app.use("/users", usersRouter);
 app.use("/games", gamesRouter);
 app.use("/teams", teamsRouter);
-app.use("/odds", oddsRouter);
+app.use("/bets", betsRouter);
 app.use("/upcoming", futureGameRouter);
 app.use("/rankings", rankingsRouter);
 
