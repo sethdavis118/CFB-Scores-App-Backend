@@ -77,7 +77,7 @@ export async function createTeam(
       classification,
       color,
       alternate_color,
-      "{" + logos + "}",
+      logos,
       home_location_id,
     ]);
     return team;

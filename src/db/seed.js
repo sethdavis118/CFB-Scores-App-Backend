@@ -12,7 +12,7 @@ import conferenceList from "../../CFDConferences.js";
 await db.connect();
 await seed();
 await db.end();
-console.log(":seedling: Database seeded.");
+console.log("🌱 Database seeded.");
 async function seed() {
   await seedTeams();
   await seedGames();
@@ -52,10 +52,10 @@ async function seedGames() {
         game.neutralSite,
         game.conferenceGame,
         game.homeId,
-        game.homePoints, //? null : 0,
-        game.homeLineScores, //? null : 0,
+        game.homePoints,
+        game.homeLineScores,
         game.awayId,
-        game.awayPoints, //? null : 0,
+        game.awayPoints,
         game.awayLineScores
       );
     }
