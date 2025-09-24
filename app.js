@@ -12,6 +12,10 @@ app.use(
 );
 
 app.use(express.json());
+app.use((req, res, next) => {
+  console.log(req.path);
+  next();
+});
 app.use(getUserFromToken);
 
 import usersRouter from "./api/users.js";
