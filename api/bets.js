@@ -2,7 +2,7 @@ import express from "express";
 const router = express.Router();
 export default router;
 
-import { createBet, getBetsByUser } from "#src/queries/bets";
+import { createBet, deleteBet, getBetsByUser } from "#src/queries/bets";
 
 //all bets by user
 // router.get("/user/:id", async (req, res) => {
@@ -21,9 +21,15 @@ router.get("/", async (req, res) => {
 
 router.post("/place_bet", async (req, res) => {
   const user = req.user;
-  const { gameId, amount, spread } = req.body;
-  const bet = createBet(user.id, gameId, amount, spread);
+  const { gameId, teamId, amount, betSpread } = req.body;
+  const bet = createBet(user.id, gameId, teamId, amount, betSpread);
   return res.status(201).send(bet);
+});
+
+router.delete("/delete/:id", async (req, res) => {
+  const { id } = req.params; // Req.body ?
+  const deleteRes = deleteBet(id);
+  return res.status(200).send(deleteRes);
 });
 
 // router.post("/login", requireBody(["email", "password"]), async (req, res) => {
