@@ -23,6 +23,7 @@ import gamesRouter from "./api/games.js";
 import teamsRouter from "./api/teams.js";
 import betsRouter from "./api/bets.js";
 import futureGameRouter from "./api/future_games.js";
+import leaderboardRouter from "./api/leaderboard.js";
 import rankingsRouter from "./api/rankings.js";
 
 app.use("/users", usersRouter);
@@ -30,6 +31,7 @@ app.use("/games", gamesRouter);
 app.use("/teams", teamsRouter);
 app.use("/bets", betsRouter);
 app.use("/upcoming", futureGameRouter);
+app.use("/leaderboard", leaderboardRouter);
 app.use("/rankings", rankingsRouter);
 
 app.use((err, req, res, next) => {

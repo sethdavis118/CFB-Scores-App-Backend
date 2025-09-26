@@ -3,6 +3,9 @@ DROP TABLE IF EXISTS user_bets CASCADE;
 DROP TABLE IF EXISTS games CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS teams CASCADE;
+DROP TABLE IF EXISTS leaderboard CASCADE;
+
+
 CREATE TABLE teams (
     id SERIAL PRIMARY KEY,
     team_id INT,
@@ -52,5 +55,19 @@ CREATE TABLE user_bets (
     time_stamp TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (user_id, game_id)
 );
+
+CREATE TABLE leaderboard (
+    id SERIAL PRIMARY KEY,
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    position INT,
+    total_bets INT DEFAULT 0,
+    weekly_wins INT DEFAULT 0,
+    weekly_losses INT DEFAULT 0,
+    all_time_wins INT DEFAULT 0,
+    all_time_losses INT DEFAULT 0,
+    total_amount_won INT DEFAULT 0,
+    UNIQUE (user_id)
+);
+
 COMMIT;
-TRUNCATE user_bets, teams, games, users RESTART IDENTITY CASCADE;
+TRUNCATE user_bets, teams, games, users, leaderboard RESTART IDENTITY CASCADE;
