@@ -50,6 +50,7 @@ CREATE TABLE user_bets (
     id SERIAL PRIMARY KEY,
     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
     game_id INT, -- Had to remove the reference here. It would be nice to fix that eventually. - Seth
+    team_id INT, 
     amount INT,
     odds TEXT,
     time_stamp TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,

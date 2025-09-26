@@ -7,7 +7,8 @@ export async function GetGames() {
 }
 
 export async function GetGameById(id) {
-  const sql = `SELECT * FROM games WHERE id = $1`;
+  console.log("id", id);
+  const sql = `SELECT * FROM games WHERE game_id = $1`;
   const game = await db.query(sql, [id]);
   return game;
 }
