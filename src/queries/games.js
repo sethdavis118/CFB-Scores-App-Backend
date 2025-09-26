@@ -20,7 +20,7 @@ export async function GetGamesByTeam(team_id) {
 }
 
 export async function GetGamesByWeek(season_week) {
-  const sql = `SELECT * FROM games WHERE season_week = $1`;
+  const sql = `SELECT * FROM games WHERE season_week = $1 ORDER BY start_date ASC`;
   const { rows: games } = await db.query(sql, [season_week]);
   return games;
 }
