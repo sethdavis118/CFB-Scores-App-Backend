@@ -51,8 +51,10 @@ CREATE TABLE user_bets (
     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
     game_id INT, -- Had to remove the reference here. It would be nice to fix that eventually. - Seth
     team_id INT, 
+    favored_team INT, 
     amount INT,
     odds TEXT,
+    win_status BOOLEAN,
     time_stamp TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (user_id, game_id)
 );
