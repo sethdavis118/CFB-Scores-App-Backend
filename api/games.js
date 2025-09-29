@@ -10,6 +10,7 @@ import {
   getGamesByYear,
   GetGamesBySeasonType,
   GetGamesByYearAndWeek,
+  editGameIsCompleted,
 } from "#src/queries/games";
 
 //all games
@@ -113,6 +114,13 @@ router.param("gameId", async (req, res, next, id) => {
 
 router.route("/:gameId").get((req, res) => {
   res.send(req.game);
+});
+
+router.put("/update/:id", async (req, res) => {
+  const { id } = req.params;
+  const { awayPoints, homePoints } = req.body;
+  const updatedGame = await editGameIsCompleted(id, awayPoints, homePoints);
+  return res.status(200).send(updatedGame);
 });
 
 //likely not needed

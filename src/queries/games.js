@@ -107,3 +107,12 @@ export async function createGame(
   ]);
   return game;
 }
+
+export async function editGameIsCompleted(id, homePoints, awayPoints) {
+  const sql =
+    "UPDATE games SET completed = true, home_points = $2, away_points = $3 WHERE game_id = $1 RETURNING *";
+  const {
+    rows: [updatedGame],
+  } = await db.query(sql, [id, homePoints, awayPoints]);
+  return updatedGame;
+}
