@@ -1,7 +1,7 @@
 import db from "../db/client.js";
 
 export async function createLeaderboard(
-  user_id,
+  username,
   position,
   total_bets,
   weekly_wins,
@@ -11,9 +11,9 @@ export async function createLeaderboard(
   total_amount_won
 ) {
   const sql =
-    "INSERT INTO leaderboard (user_id, position, total_bets, weekly_wins, weekly_losses, all_time_wins, all_time_losses, total_amount_won) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *";
+    "INSERT INTO leaderboard (username, position, total_bets, weekly_wins, weekly_losses, all_time_wins, all_time_losses, total_amount_won) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *";
   const leaderboard = await db.query(sql, [
-    user_id,
+    username,
     position,
     total_bets,
     weekly_wins,
