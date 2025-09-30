@@ -122,6 +122,55 @@ export async function editGameIsCompleted(id, homePoints, awayPoints) {
   return updatedGame;
 }
 
+/*
+Adding upsertGame function.  This can be used to initially try to do an
+insert into the games table.  If the game_id already exists, the row with that
+table gets updated.  I imagine we can loop through the scoreboard api results
+to call this function.
+*/
+
+export async function upsertGame(game) {
+  const sql = `
+    INSERT INTO games (
+      game_id, season, season_week, season_type, start_date,
+      completed, neutral_site, conference_game,
+      home_team_id, home_points, away_team_id, away_points
+    )
+    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
+    ON CONFLICT (game_id) DO UPDATE
+    SET season = EXCLUDED.season,
+        season_week = EXCLUDED.season_week,
+        season_type = EXCLUDED.season_type,
+        start_date = EXCLUDED.start_date,
+        completed = EXCLUDED.completed,
+        neutral_site = EXCLUDED.neutral_site,
+        conference_game = EXCLUDED.conference_game,
+        home_team_id = EXCLUDED.home_team_id,
+        home_points = EXCLUDED.home_points,
+        away_team_id = EXCLUDED.away_team_id,
+        away_points = EXCLUDED.away_points
+    RETURNING *;
+  `;
+
+  const values = [
+    game.game_id,
+    game.season,
+    game.season_week,
+    game.season_type,
+    game.start_date,
+    game.completed,
+    game.neutral_site,
+    game.conference_game,
+    game.home_team_id,
+    game.home_points,
+    game.away_team_id,
+    game.away_points,
+  ];
+
+  const { rows } = await db.query(sql, values);
+  return rows[0];
+}
+
 /**
  * Get games from DB, then sort based on:
  * 1. Favorite team games
