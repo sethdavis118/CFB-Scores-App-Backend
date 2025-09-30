@@ -7,6 +7,7 @@ import {
   createUSer,
   getUserByEmailAndPassword,
   getUserById,
+  getFavoriteTeamByUserId
 } from "#src/queries/users";
 import { createToken, verifyToken } from "#utils/jwt";
 
