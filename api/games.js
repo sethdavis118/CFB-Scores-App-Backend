@@ -85,7 +85,6 @@ router.route("/:team_id").get(async (req, res) => {
 //games by week
 router.route("/week/:id").get(async (req, res) => {
   const games = await GetGamesByWeek(req.params.id);
-  console.log(req.params.id);
   res.send(games);
 });
 

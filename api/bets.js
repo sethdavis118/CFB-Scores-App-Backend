@@ -18,8 +18,6 @@ import {
 
 router.get("/", async (req, res) => {
   const user = req.user;
-  console.log(req.user);
-  // console.log(req);
   const bets = await getBetsByUser(user.id);
   res.send(bets);
 });

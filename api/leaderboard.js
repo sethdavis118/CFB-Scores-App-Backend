@@ -2,13 +2,25 @@ import express from "express";
 const router = express.Router();
 export default router;
 
-import { getLeaderboard } from "#src/queries/leaderboard";
+import {
+  editTotalAmountWon,
+  editWeeklyAmountWon,
+  getLeaderboard,
+} from "#src/queries/leaderboard";
 
 //get leaderboard
 router.route("/").get(async (req, res) => {
   req.body = {};
   const leaderboard = await getLeaderboard();
   res.send(leaderboard);
+});
+
+router.route("/update").put(async (req, res) => {
+  const { amount_won } = req.body;
+  const user = req.user;
+  await editTotalAmountWon(user.id, amount_won);
+  const updatedUser = await editWeeklyAmountWon(user.id, amount_won);
+  return res.status(200).send(updatedUser);
 });
 
 //create leaderboard

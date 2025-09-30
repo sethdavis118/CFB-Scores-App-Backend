@@ -1,5 +1,5 @@
 import express from "express";
-import { getUserCredits, useCredits, getCurrentCredits } from "#src/queries/credits";
+import { getUserCredits, useCredits } from "#src/queries/credits";
 const router = express.Router();
 export default router;
 
@@ -8,7 +8,7 @@ router.get("/:user_id", async (req, res) => {
   const { user_id } = req.params;
 
   try {
-    const credits = await getCurrentCredits(user_id);
+    const credits = await getUserCredits(user_id);
     res.json({ credits });
   } catch (err) {
     console.error("Error fetching credits:", err);
@@ -17,12 +17,12 @@ router.get("/:user_id", async (req, res) => {
 });
 
 // Using your credits
-router.post("/:user_id/use", async (req, res) => {
-  const { user_id } = req.params;
+router.put("/use", async (req, res) => {
+  const user = req.user;
   const { amount } = req.body;
 
   try {
-    const remainingCredits = await useCredits(user_id, amount);
+    const remainingCredits = await useCredits(user.id, amount);
     res.json({ credits: remainingCredits });
   } catch (err) {
     console.error("Error using credits:", err);

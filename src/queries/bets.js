@@ -32,7 +32,6 @@ export async function editBetWinStatus(id, winStatus) {
   const {
     rows: [updatedBet],
   } = await db.query(sql, [id, winStatus]);
-  console.log("Updating bet", updatedBet);
   return updatedBet;
 }
 

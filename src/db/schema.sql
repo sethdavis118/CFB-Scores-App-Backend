@@ -66,12 +66,12 @@ CREATE TABLE leaderboard (
     user_id UUID UNIQUE NOT NULL REFERENCES users(id) ,
     username VARCHAR(100) UNIQUE NOT NULL REFERENCES users(username),
     position INT,
-    total_bets INT DEFAULT 0,
     weekly_wins INT DEFAULT 0,
     weekly_losses INT DEFAULT 0,
     all_time_wins INT DEFAULT 0,
     all_time_losses INT DEFAULT 0,
     total_amount_won INT DEFAULT 0,
+    weekly_amount_won INT DEFAULT 0,
     UNIQUE (user_id, username)
 );
 

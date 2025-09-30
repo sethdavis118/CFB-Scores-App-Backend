@@ -30,3 +30,21 @@ export async function getLeaderboard() {
   const { rows: leaderboard } = await db.query(sql);
   return leaderboard;
 }
+
+export async function editTotalAmountWon(user_id, amount_won) {
+  const sql =
+    "UPDATE leaderboard SET total_amount_won = total_amount_won + $2 WHERE user_id = $1 RETURNING *";
+  const {
+    rows: [updatedUser],
+  } = await db.query(sql, [user_id, amount_won]);
+  return updatedUser;
+}
+
+export async function editWeeklyAmountWon(user_id, amount_won) {
+  const sql =
+    "UPDATE leaderboard SET weekly_amount_won = weekly_amount_won + $2 WHERE user_id = $1 RETURNING *";
+  const {
+    rows: [updatedUser],
+  } = await db.query(sql, [user_id, amount_won]);
+  return updatedUser;
+}
