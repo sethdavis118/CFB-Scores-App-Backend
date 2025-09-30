@@ -74,16 +74,13 @@ router.route("/:id/games").get(async (req, res) => {
   const games = await GetGames(req.user.id);
   res.send(games);
 });
+
 //games by team
-router.route("/games/teams/:id").get(async (req, res) => {
+router.route("/:team_id").get(async (req, res) => {
   const games = await GetGamesByTeam(req.params.id);
   res.send(games);
 });
-//games by team
-router.route("/teams/:id").get(async (req, res) => {
-  const games = await GetGamesByTeam(req.params.id);
-  res.send(games);
-});
+
 //games by week
 router.route("/week/:id").get(async (req, res) => {
   const games = await GetGamesByWeek(req.params.id);
@@ -99,7 +96,7 @@ router.route("/week/:id").get(async (req, res) => {
 
 //games by season type
 router.route("/season/:season").get(async (req, res) => {
-  const games = await GetGamesBySeasonType(req.params.season_type);
+  const games = await GetGamesBySeasonType(req.params.season);
   res.send(games);
 });
 
