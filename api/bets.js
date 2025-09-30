@@ -38,6 +38,18 @@ router.post("/place_bet", async (req, res) => {
   return res.status(201).send(bet);
 });
 
+//bets by week
+// router.get("/week/:week", async (req, res) => {
+//   try {
+//     const { week } = req.params;
+//     const bets = await getBetsByWeek(week);
+//     res.send(bets);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).send("Server error");
+//   }
+// });
+
 router.delete("/delete/:id", async (req, res) => {
   const { id } = req.params;
   const deleteRes = deleteBet(id);

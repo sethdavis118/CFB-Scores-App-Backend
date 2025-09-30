@@ -61,3 +61,9 @@ export async function getBetsByGame(game_id) {
   const { rows: bets } = await db.query(sql, [game_id]);
   return bets;
 }
+
+// export async function getBetsByWeek(week) {
+//   const sql = `SELECT * FROM user_bets WHERE week = $1`;
+//   const { rows: bets } = await db.query(sql, [week]);
+//   return bets;
+// }
