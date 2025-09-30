@@ -90,3 +90,13 @@ export async function getUserDataByID(id) {
   } = await db.query(sql, [id]);
   return user;
 }
+
+export async function getFavoriteTeamByUserId(userId) {
+  const sql = `
+    SELECT favorite_team
+    FROM users
+    WHERE id = $1;
+  `;
+  const { rows } = await db.query(sql, [userId]);
+  return rows[0]?.favorite_team || null;
+}
