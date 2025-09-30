@@ -47,11 +47,8 @@ export async function getUserDataByEmailAndPassword(email, password) {
   } = await db.query(sql, [email]);
   if (!user) return null;
 
-  console.log("Before the check");
   const isValid = await bcrypt.compare(password, user.password);
-  console.log("After the isValid variable is assigned.")
   if (!isValid) return null;
-  console.log(user);
   return user;
 }
 
@@ -70,7 +67,11 @@ export async function getOddsByUser(user_id) {
   return odds;
 }
 
-export async function updateUserFavorites(id, favorite_team, favorite_conference) {
+export async function updateUserFavorites(
+  id,
+  favorite_team,
+  favorite_conference
+) {
   const sql = `
     UPDATE users
     SET favorite_team = $2, favorite_conference = $3
