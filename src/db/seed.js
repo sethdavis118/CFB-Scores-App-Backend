@@ -51,9 +51,13 @@ async function seedGames() {
         game.completed,
         game.neutralSite,
         game.conferenceGame,
+        game.homeTeam,
+        game.homeConference,
         game.homeId,
         game.homePoints,
         game.homeLineScores,
+        game.awayTeam,
+        game.awayConference,
         game.awayId,
         game.awayPoints,
         game.awayLineScores

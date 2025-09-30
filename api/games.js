@@ -11,6 +11,8 @@ import {
   GetGamesBySeasonType,
   GetGamesByYearAndWeek,
   editGameIsCompleted,
+  GetGamesByConference,
+  GetGamesByConferenceAndWeek,
 } from "#src/queries/games";
 
 //all games
@@ -82,18 +84,48 @@ router.route("/:team_id").get(async (req, res) => {
   res.send(games);
 });
 
+//games by team name
+// router.route("/team/:team").get(async (req, res) => {
+//   const games = await GetGamesByTeamName(req.params.team);
+//   res.send(games);
+// });
+
 //games by week
 router.route("/week/:id").get(async (req, res) => {
-  const games = await GetGamesByWeek(req.params.id);
-  console.log(req.params.id);
-  res.send(games);
+  try {
+    const games = await GetGamesByWeek(req.params.id);
+    console.log(req.params.id);
+    res.send(games);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server error");
+  }
 });
 
 //games by conference
-// router.route("/conference/:conference").get(async (req, res) => {
-//   const games = await GetGamesByConference(req.params.conference);
-//   res.send(games);
-// });
+router.route("/conference/:conference").get(async (req, res) => {
+  try {
+    const games = await GetGamesByConference(req.params.conference);
+    res.send(games);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server error");
+  }
+});
+
+//games by conference and week
+router.route("/conference/:conference/week/:week").get(async (req, res) => {
+  try {
+    const games = await GetGamesByConferenceAndWeek(
+      req.params.conference,
+      req.params.week
+    );
+    res.send(games);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server error");
+  }
+});
 
 //games by season type
 router.route("/season/:season").get(async (req, res) => {
