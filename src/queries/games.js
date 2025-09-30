@@ -119,7 +119,6 @@ export async function editGameIsCompleted(id, homePoints, awayPoints) {
     rows: [updatedGame],
   } = await db.query(sql, [id, homePoints, awayPoints]);
 
-  
   return updatedGame;
 }
 
@@ -145,12 +144,12 @@ export async function getSortedGames(authHeader) {
   const { rows: games } = await db.query(`SELECT * FROM games`);
 
   // Step 3: Fetch Top 25 rankings from API
-  const res = await fetch("https://apinext.collegefootballdata.com/rankings", {
+  const res = await fetch(`${dotenv.CFBD_API_BASE}rankings`, {
     headers: { Authorization: `Bearer ${process.env.CFBD_API_KEY}` },
   });
   const rankingData = await res.json();
 
-/**************
+  /**************
 At this point, an array of ranked teams won't work.  We need a set.
 Information for a set can be found below because there's not a ton of room to explain them.
 It's easier to compare rankings with this data object.
@@ -172,17 +171,17 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
     sorting by game with favorite team, ongoing game with a top 25 team, ongoing games by start time, then completed games.
     Look in the Value Equality section of the mdn link provided to see the logic.
   */
-
-  //sort by favorite team first
-  const aFav =
+  const sorted = games.sort((a, b) => {
+    //sort by favorite team first
+    const aFav =
       a.home_team_id === favoriteTeamId || a.away_team_id === favoriteTeamId;
     const bFav =
       b.home_team_id === favoriteTeamId || b.away_team_id === favoriteTeamId;
     if (aFav && !bFav) return -1;
     if (bFav && !aFav) return 1;
 
-  //Sort by games with top 25 teams in them that are not completed
-  const aTop25 =
+    //Sort by games with top 25 teams in them that are not completed
+    const aTop25 =
       !a.completed &&
       (rankedTeams.has(a.home_team_id) || rankedTeams.has(a.away_team_id));
     const bTop25 =
@@ -191,16 +190,15 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
     if (aTop25 && !bTop25) return -1;
     if (bTop25 && !aTop25) return 1;
 
-  //Sort by other ongoing games by start time.
-  if (!a.completed && !b.completed) {
+    //Sort by other ongoing games by start time.
+    if (!a.completed && !b.completed) {
       return new Date(a.start_date) - new Date(b.start_date);
     }
-  //Sort completed games by start date last.
-      if (!a.completed && b.completed) return -1;
+    //Sort completed games by start date last.
+    if (!a.completed && b.completed) return -1;
     if (a.completed && !b.completed) return 1;
 
     return 0;
   });
-
   return sorted;
 }
