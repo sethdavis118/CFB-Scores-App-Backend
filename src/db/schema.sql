@@ -27,7 +27,9 @@ CREATE TABLE users (
     password VARCHAR(100) NOT NULL,
     favorite_team INT REFERENCES teams(id) ON DELETE SET NULL,
     favorite_conference TEXT,
-    bets INT[]
+    bets INT[],
+    credits INT DEFAULT 500,
+    last_reset DATE DEFAULT CURRENT_DATE
 );
 CREATE TABLE games (
     id SERIAL PRIMARY KEY,

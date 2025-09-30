@@ -25,6 +25,7 @@ import betsRouter from "./api/bets.js";
 import futureGameRouter from "./api/future_games.js";
 import leaderboardRouter from "./api/leaderboard.js";
 import rankingsRouter from "./api/rankings.js";
+import creditsRouter from "./api/credits.js";
 
 app.use("/users", usersRouter);
 app.use("/games", gamesRouter);
@@ -33,6 +34,7 @@ app.use("/bets", betsRouter);
 app.use("/upcoming", futureGameRouter);
 app.use("/leaderboard", leaderboardRouter);
 app.use("/rankings", rankingsRouter);
+app.use("/credits", creditsRouter);
 
 app.use((err, req, res, next) => {
   switch (err.code) {
