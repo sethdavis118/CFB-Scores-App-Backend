@@ -1,4 +1,6 @@
 import db from "../db/client.js";
+import dotenv from "dotenv";
+dotenv.config({ path: "#/.env" });
 
 export async function GetGames() {
   const sql = ` SELECT * FROM games`;
@@ -78,7 +80,7 @@ export async function createGame(
       away_team_id,
       away_points,
       away_qtr_scores
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11, $12, $13, $14) RETURNING*
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING*
     `;
   //console.log(sql);
   const game = await db.query(sql, [
@@ -91,11 +93,44 @@ export async function createGame(
     neutral_site,
     conference_game,
     home_team_id,
-    home_points,
-    `{${home_qtr_scores}}`,
+    home_points ? null : 0,
+    Array.isArray(home_qtr_scores) ? home_qtr_scores : null,
     away_team_id,
-    away_points,
-    `{${away_qtr_scores}}`,
+    away_points ? null : 0,
+    Array.isArray(away_qtr_scores) ? away_qtr_scores : null,
   ]);
   return game;
+}
+
+export async function getGamesByYear(year) {
+  const CFBD_API_KEY = process.env.CFBD_API_KEY;
+  const CFBD_API_BASE = process.env.CFBD_API_BASE;
+  console.log("CFBD_API_KEY: ", process.env.CFBD_API_KEY);
+  if (!CFBD_API_KEY) {
+    throw new Error("CFBD_API_KEY is not set");
+  }
+
+  const url = new URL("./games", CFBD_API_BASE);
+  await url.searchParams.set("year", year);
+  url.searchParams.set("classification", "fbs");
+  console.log("url with search params: ", url.toString());
+  // you could pass other params here e.g. seasonType, week, etc.
+
+  const resp = await fetch(url.toString(), {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${CFBD_API_KEY}`,
+    },
+  });
+
+  if (!resp.ok) {
+    const errBody = await resp.text();
+    throw new Error(
+      `CFBD API request failed: ${resp.status} ${resp.statusText} - ${errBody}`
+    );
+  }
+
+  const data = await resp.json();
+  return data;
 }
