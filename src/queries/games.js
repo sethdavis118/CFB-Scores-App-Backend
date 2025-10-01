@@ -1,8 +1,6 @@
 import db from "../db/client.js";
 import dotenv from "dotenv";
 dotenv.config({ path: "#/.env" });
-import dotenv from "dotenv";
-dotenv.config({ path: "#/.env" });
 
 export async function GetGames() {
   const sql = ` SELECT * FROM games`;
@@ -142,13 +140,6 @@ export async function getGamesByYear(year) {
   return data;
 }
 
-export async function getGamesByYear(year) {
-  const CFBD_API_KEY = process.env.CFBD_API_KEY;
-  const CFBD_API_BASE = process.env.CFBD_API_BASE;
-  console.log("CFBD_API_KEY: ", process.env.CFBD_API_KEY);
-  if (!CFBD_API_KEY) {
-    throw new Error("CFBD_API_KEY is not set");
-  }
 
   const url = new URL("./games", CFBD_API_BASE);
   await url.searchParams.set("year", year);
