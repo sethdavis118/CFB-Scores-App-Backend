@@ -4,11 +4,15 @@ export default router;
 
 import { getLeaderboard } from "#src/queries/leaderboard";
 
-//get leaderboard
-router.route("/").get(async (req, res) => {
-  req.body = {};
-  const leaderboard = await getLeaderboard();
-  res.send(leaderboard);
+// GET leaderboard
+router.get("/", async (req, res) => {
+  try {
+    const leaderboard = await getLeaderboard();
+    res.json(leaderboard);
+  } catch (err) {
+    console.error("Error fetching leaderboard:", err);
+    res.status(500).json({ message: "Error fetching leaderboard" });
+  }
 });
 
 //create leaderboard
