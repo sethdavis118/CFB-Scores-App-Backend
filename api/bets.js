@@ -7,15 +7,10 @@ import {
   deleteBet,
   editBetWinStatus,
   getBetsByUser,
+  getBetsByWeek,
 } from "#src/queries/bets";
 
 //all bets by user
-// router.get("/user/:id", async (req, res) => {
-//   req.body = {};
-//   const bets = await getBetsByUser(req.params.id);
-//   res.send(bets);
-// });
-
 router.get("/", async (req, res) => {
   const user = req.user;
   console.log(req.user);
@@ -39,16 +34,22 @@ router.post("/place_bet", async (req, res) => {
 });
 
 //bets by week
-// router.get("/week/:week", async (req, res) => {
-//   try {
-//     const { week } = req.params;
-//     const bets = await getBetsByWeek(week);
-//     res.send(bets);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).send("Server error");
-//   }
-// });
+router.get("/week/:week", async (req, res) => {
+  try {
+    const user = req.user;
+    if (!user) return res.status(400).send("Not authorized");
+
+    const week = Number.parseInt(req.params.week, 10);
+    if (!Number.isInteger(week) || week < 1 || week > 16) {
+      return res.status(400).send("Invalid week number");
+    }
+    const bets = await getBetsByWeek(user.id, week);
+    res.send(bets);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server error");
+  }
+});
 
 router.delete("/delete/:id", async (req, res) => {
   const { id } = req.params;
@@ -62,24 +63,3 @@ router.put("/update/:id", async (req, res) => {
   const updatedBet = await editBetWinStatus(id, winStatus);
   return res.status(201).send(updatedBet);
 });
-
-// router.post("/login", requireBody(["email", "password"]), async (req, res) => {
-//   const { email, password } = req.body;
-//   const user = await getUserByEmailAndPassword(email, password);
-
-//   if (!user) {
-//     return res
-//       .status(401)
-//       .json({
-//         error:
-//           "Invalid email, password, or both. Maybe you should start writing these down",
-//       });
-//   }
-
-//bets by user
-// router.get("/user", async (req, res) => {
-//   req.body = {};
-//   const bets = await getBetsByUser(req.params.id);
-//   console.log(bets);
-//   res.send(bets);
-// });
