@@ -1,4 +1,6 @@
 import db from "../db/client.js";
+import dotenv from "dotenv";
+dotenv.config({ path: "#/.env" });
 
 export async function GetGames() {
   const sql = ` SELECT * FROM games`;
@@ -7,32 +9,23 @@ export async function GetGames() {
 }
 
 export async function GetGameById(id) {
-  const sql = `SELECT * FROM games WHERE game_id = $1`;
+  const sql = `SELECT * FROM games WHERE id = $1`;
   const game = await db.query(sql, [id]);
   return game;
 }
-
 export async function GetGamesByTeam(team_id) {
   const sql = `SELECT * FROM games WHERE home_team_id = $1 OR away_team_id = $1`;
-  const { rows: games } = await db.query(sql, [team_id]);
+  const {
+    rows: [games],
+  } = await db.query(sql, [team_id]);
   return games;
 }
-
-// export async function GetGamesByTeamName(team_name) {
-//   const sql = `SELECT * FROM games WHERE homeTeam = $1 OR awayTeam = $1`;
-//   const { rows: games } = await db.query(sql, [team_name]);
-//   return games;
-// }
 
 export async function GetGamesByWeek(season_week) {
-  const sql = `SELECT * FROM games WHERE season_week = $1 ORDER BY start_date ASC`;
-  const { rows: games } = await db.query(sql, [season_week]);
-  return games;
-}
-
-export async function getGamesByYear(year) {
-  const sql = `SELECT * FROM games WHERE season = $1`;
-  const { rows: games } = await db.query(sql, [year]);
+  const sql = `SELECT * FROM games WHERE season_week = $1`;
+  const {
+    rows: [games],
+  } = await db.query(sql, [season_week]);
   return games;
 }
 
@@ -44,19 +37,15 @@ export async function GetGamesByConference(conference) {
 
 export async function GetGamesBySeasonType(season_type) {
   const sql = `SELECT * FROM games WHERE season_type = $1`;
-  const { rows: games } = await db.query(sql, [season_type]);
+  const {
+    rows: [games],
+  } = await db.query(sql, [season_type]);
   return games;
 }
 
 export async function GetGamesByConferenceAndWeek(conference, week) {
   const sql = `SELECT * FROM games WHERE (homeConference = $1 OR awayConference = $1) AND season_week = $2`;
   const { rows: games } = await db.query(sql, [conference, week]);
-  return games;
-}
-
-export async function GetGamesByYearAndWeek(year, week) {
-  const sql = `SELECT * FROM games WHERE season = $1 AND season_week = $2`;
-  const { rows: games } = await db.query(sql, [year, week]);
   return games;
 }
 
@@ -69,13 +58,9 @@ export async function createGame(
   completed,
   neutral_site,
   conference_game,
-  homeTeam,
-  homeConference,
   home_team_id,
   home_points,
   home_qtr_scores,
-  awayTeam,
-  awayConference,
   away_team_id,
   away_points,
   away_qtr_scores
@@ -90,17 +75,13 @@ export async function createGame(
       completed,
       neutral_site,
       conference_game,
-      homeTeam,
-      homeConference,
       home_team_id,
       home_points,
       home_qtr_scores,
-      awayTeam,
-      awayConference,
       away_team_id,
       away_points,
       away_qtr_scores
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11, $12, $13, $14, $15, $16, $17, $18) RETURNING*
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING*
     `;
   //console.log(sql);
   const game = await db.query(sql, [
@@ -112,25 +93,45 @@ export async function createGame(
     completed,
     neutral_site,
     conference_game,
-    homeTeam,
-    homeConference,
     home_team_id,
-    home_points,
-    `{${home_qtr_scores}}`,
-    awayTeam,
-    awayConference,
+    home_points ? null : 0,
+    Array.isArray(home_qtr_scores) ? home_qtr_scores : null,
     away_team_id,
-    away_points,
-    `{${away_qtr_scores}}`,
+    away_points ? null : 0,
+    Array.isArray(away_qtr_scores) ? away_qtr_scores : null,
   ]);
   return game;
 }
 
-export async function editGameIsCompleted(id, homePoints, awayPoints) {
-  const sql =
-    "UPDATE games SET completed = true, home_points = $2, away_points = $3 WHERE game_id = $1 RETURNING *";
-  const {
-    rows: [updatedGame],
-  } = await db.query(sql, [id, homePoints, awayPoints]);
-  return updatedGame;
+export async function getGamesByYear(year) {
+  const CFBD_API_KEY = process.env.CFBD_API_KEY;
+  const CFBD_API_BASE = process.env.CFBD_API_BASE;
+  console.log("CFBD_API_KEY: ", process.env.CFBD_API_KEY);
+  if (!CFBD_API_KEY) {
+    throw new Error("CFBD_API_KEY is not set");
+  }
+
+  const url = new URL("./games", CFBD_API_BASE);
+  await url.searchParams.set("year", year);
+  url.searchParams.set("classification", "fbs");
+  console.log("url with search params: ", url.toString());
+  // you could pass other params here e.g. seasonType, week, etc.
+
+  const resp = await fetch(url.toString(), {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${CFBD_API_KEY}`,
+    },
+  });
+
+  if (!resp.ok) {
+    const errBody = await resp.text();
+    throw new Error(
+      `CFBD API request failed: ${resp.status} ${resp.statusText} - ${errBody}`
+    );
+  }
+
+  const data = await resp.json();
+  return data;
 }

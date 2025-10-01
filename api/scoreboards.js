@@ -1,35 +1,10 @@
 import db from "#src/db/client";
+import { getScoreboard } from "#src/queries/scoreboards";
 
-export async function getScoreboard() {
-  const CFBD_API_KEY = process.env.CFBD_API_KEY;
-  const CFBD_API_BASE = process.env.CFBD_API_BASE;
-  console.log("CFBD_API_KEY: ", process.env.CFBD_API_KEY);
-  if (!CFBD_API_KEY) {
-    throw new Error("CFBD_API_KEY is not set");
-  }
-
-  const url = new URL("./scoreboard", CFBD_API_BASE);
-  url.searchParams.set("classification", "fbs");
-  console.log("url with search params: ", url.toString());
-  // you could pass other params here e.g. seasonType, week, etc.
-
-  const resp = await fetch(url.toString(), {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      Authorization: `Bearer ${CFBD_API_KEY}`,
-    },
-  });
-
-  if (!resp.ok) {
-    const errBody = await resp.text();
-    throw new Error(
-      `CFBD API request failed: ${resp.status} ${resp.statusText} - ${errBody}`
-    );
-  }
-
-  const data = await resp.json();
-  return data;
+/* export async function getScoreboards() {
+  const sql = `SELECT * FROM scoreboads`;
+  const { row: scoreboards } = await db.query(sql);
+  return scoreboards;
 }
 
 export async function createScoreboard(sb) {
@@ -78,4 +53,9 @@ export async function createScoreboard(sb) {
   } catch (e) {
     console.error(e);
   }
-}
+} */
+/* export async function getScoreboard(GameId) {
+  const sql = `SELECT * FROM scoreboads WHERE id = $1`;
+  const { row: scoreboards } = await db.query(sql[GameId]);
+  return scoreboards;
+} */

@@ -6,7 +6,7 @@ import requireBody from "#middleware/requireBody";
 import {
   GetTeams,
   GetTeamById,
-  GetTeamsByYear,
+  //GetTeamsByYear,
   GetTeamsByConference,
   GetTeamByTeamId,
   GetConferences,

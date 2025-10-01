@@ -22,10 +22,12 @@ import futureGameRouter from "./api/future_games.js";
 import leaderboardRouter from "./api/leaderboard.js";
 import rankingsRouter from "./api/rankings.js";
 import creditsRouter from "./api/credits.js";
+import scoreboardsRouter from "./api/scoreboards.js";
 
 app.use("/users", usersRouter);
 app.use("/games", gamesRouter);
 app.use("/teams", teamsRouter);
+app.use("/scoreboards", scoreboardsRouter);
 app.use("/bets", betsRouter);
 app.use("/upcoming", futureGameRouter);
 app.use("/leaderboard", leaderboardRouter);
