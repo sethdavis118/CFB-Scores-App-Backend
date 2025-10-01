@@ -1,4 +1,5 @@
 import db from "#src/db/client";
+import { useCredits } from "#src/queries/credits"
 
 export async function createBet(
   user_id,
@@ -67,3 +68,11 @@ export async function getBetsByWeek(user_id, week) {
   const { rows: bets } = await db.query(sql, [user_id, week]);
   return bets;
 }
+
+// export async function createBetWithCredits(user_id, gameId, teamId, amount, betSpread) {
+//   await useCredits(user_id, amount);
+//   const sql = "INSERT INTO user_bets (user_id, game_id, team_id, amount, odds) VALUES ($1, $2, $3, $4, $5) RETURNING *";
+//   const { rows: [bet] } = await db.query(sql, [user_id, gameId, teamId, amount, betSpread]);
+//   return bet;
+// }
+

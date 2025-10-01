@@ -1,18 +1,39 @@
 import db from "../db/client.js";
 
 export async function createLeaderboard(
+  user_id,
   username,
-  position,
-  total_bets,
-  weekly_wins,
-  weekly_losses,
-  all_time_wins,
-  all_time_losses,
-  total_amount_won
+  position = 0,
+  total_bets = 0,
+  weekly_wins = 0,
+  weekly_losses = 0,
+  all_time_wins = 0,
+  all_time_losses = 0,
+  total_amount_won = 0
 ) {
-  const sql =
-    "INSERT INTO leaderboard (username, position, total_bets, weekly_wins, weekly_losses, all_time_wins, all_time_losses, total_amount_won) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *";
-  const leaderboard = await db.query(sql, [
+  const sql = `
+    INSERT INTO leaderboard (
+      user_id, username, position, total_bets, weekly_wins, weekly_losses, 
+      all_time_wins, all_time_losses, total_amount_won
+    )
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    ON CONFLICT (user_id)
+    DO UPDATE SET
+      username = EXCLUDED.username, -- keep username updated
+      position = EXCLUDED.position,
+      total_bets = leaderboard.total_bets + EXCLUDED.total_bets,
+      weekly_wins = leaderboard.weekly_wins + EXCLUDED.weekly_wins,
+      weekly_losses = leaderboard.weekly_losses + EXCLUDED.weekly_losses,
+      all_time_wins = leaderboard.all_time_wins + EXCLUDED.all_time_wins,
+      all_time_losses = leaderboard.all_time_losses + EXCLUDED.all_time_losses,
+      total_amount_won = leaderboard.total_amount_won + EXCLUDED.total_amount_won
+    RETURNING *;
+  `;
+
+  const {
+    rows: [leaderboard],
+  } = await db.query(sql, [
+    user_id,
     username,
     position,
     total_bets,
@@ -22,11 +43,18 @@ export async function createLeaderboard(
     all_time_losses,
     total_amount_won,
   ]);
+
   return leaderboard;
 }
 
-export async function getLeaderboard() {
-  const sql = `SELECT * FROM leaderboard ORDER BY weekly_wins DESC, total_amount_won DESC`;
-  const { rows: leaderboard } = await db.query(sql);
+// Gets the leaderboard sorted by username and amount won
+export async function getLeaderboard(limit = 10) {
+  const sql = `
+    SELECT username, total_amount_won
+    FROM leaderboard
+    ORDER BY total_amount_won DESC
+    LIMIT $1;
+  `;
+  const { rows: leaderboard } = await db.query(sql, [limit]);
   return leaderboard;
 }

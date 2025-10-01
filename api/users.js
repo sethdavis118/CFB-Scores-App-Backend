@@ -3,12 +3,10 @@ const router = express.Router();
 export default router;
 import requireBody from "#middleware/requireBody";
 import requireUser from "#middleware/requireUser";
-import {
-  createUSer,
-  getUserByEmailAndPassword,
-  getUserById,
-} from "#src/queries/users";
+import {createUSer, getUserByEmailAndPassword,getUserById,} from "#src/queries/users";
 import { createToken, verifyToken } from "#utils/jwt";
+import { createLeaderboard } from "#src/queries/leaderboard";
+
 
 router.post(
   "/register",
@@ -29,7 +27,8 @@ router.post(
       if (!user || !user.id) {
         return res.status(400).json({ error: "User creation failed" });
       }
-
+      await createLeaderboard(user.id, user.username);
+      
       const token = createToken({ id: user.id });
       res.status(201).json({ token });
     } catch (err) {

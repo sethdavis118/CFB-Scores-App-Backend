@@ -1,20 +1,20 @@
 import express from "express";
-import { getUserCredits, useCredits, getCurrentCredits } from "#src/queries/credits";
+import { getUserCredits, useCredits, } from "#src/queries/credits";
 const router = express.Router();
 export default router;
 
 // How each user gets credits each week
-router.get("/:user_id", async (req, res) => {
-  const { user_id } = req.params;
+// router.get("/:user_id", async (req, res) => {
+//   const { user_id } = req.params;
 
-  try {
-    const credits = await getCurrentCredits(user_id);
-    res.json({ credits });
-  } catch (err) {
-    console.error("Error fetching credits:", err);
-    res.status(500).json({ message: "Error fetching credits" });
-  }
-});
+//   try {
+//     const credits = await getCurrentCredits(user_id);
+//     res.json({ credits });
+//   } catch (err) {
+//     console.error("Error fetching credits:", err);
+//     res.status(500).json({ message: "Error fetching credits" });
+//   }
+// });
 
 // Using your credits
 router.post("/:user_id/use", async (req, res) => {
