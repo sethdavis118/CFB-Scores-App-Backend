@@ -41,9 +41,13 @@ CREATE TABLE games (
     completed BOOLEAN,
     neutral_site BOOLEAN,
     conference_game BOOLEAN,
+    homeTeam TEXT,
+    homeConference TEXT,
     home_team_id INT NOT NULL,
     home_points INT,
     home_qtr_scores INT[],
+    awayTeam TEXT,
+    awayConference TEXT,
     away_team_id INT NOT NULL,
     away_points INT,
     away_qtr_scores INT[]
@@ -58,6 +62,7 @@ CREATE TABLE user_bets (
     odds TEXT,
     win_status BOOLEAN,
     time_stamp TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    week INT DEFAULT 1,
     UNIQUE (user_id, game_id)
 );
 
