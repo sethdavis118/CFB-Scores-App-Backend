@@ -62,7 +62,7 @@ CREATE TABLE user_bets (
     odds TEXT,
     win_status BOOLEAN,
     time_stamp TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    -- week INT REFERENCES games(season_week),
+    week INT DEFAULT 1,
     UNIQUE (user_id, game_id)
 );
 
