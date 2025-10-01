@@ -30,13 +30,8 @@ export async function GetGamesByWeek(season_week) {
 }
 
 export async function GetGamesByConference(conference) {
-  const sql = `SELECT * FROM games 
-    JOIN teams AS home_team ON games.home_team_id = home_team.id
-    JOIN teams AS away_team ON games.away_team_id = away_team.id
-    WHERE home_team.conference = $1 OR away_team.conference = $1`;
-  const {
-    rows: [games],
-  } = await db.query(sql, [conference]);
+  const sql = `SELECT * FROM games WHERE homeConference = $1 OR awayConference = $1`;
+  const { rows: games } = await db.query(sql, [conference]);
   return games;
 }
 
@@ -45,6 +40,12 @@ export async function GetGamesBySeasonType(season_type) {
   const {
     rows: [games],
   } = await db.query(sql, [season_type]);
+  return games;
+}
+
+export async function GetGamesByConferenceAndWeek(conference, week) {
+  const sql = `SELECT * FROM games WHERE (homeConference = $1 OR awayConference = $1) AND season_week = $2`;
+  const { rows: games } = await db.query(sql, [conference, week]);
   return games;
 }
 

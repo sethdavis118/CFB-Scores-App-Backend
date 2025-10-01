@@ -8,11 +8,6 @@ export async function GetTeams() {
     ...t,
     logos: t.logos || [], // ensure always array
   }));
-
-  return teams.map((t) => ({
-    ...t,
-    logos: t.logos || [], // ensure always array
-  }));
 }
 
 export async function GetTeamById(id) {
@@ -76,13 +71,11 @@ export async function createTeam(
       school,
       mascot,
       abbreviation,
-      abbreviation,
       conference,
       division,
       classification,
       color,
       alternate_color,
-      logos,
       logos,
       home_location_id,
     ]);

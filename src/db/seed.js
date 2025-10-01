@@ -1,15 +1,3 @@
-import db from "./client.js";
-import { createTeam } from "../queries/teams.js";
-import { createGame, getGamesByYear } from "../queries/games.js";
-import { createGame, getGamesByYear } from "../queries/games.js";
-import { createScoreboard } from "../queries/scoreboards.js";
-import teamList from "../../CFDTeams.js";
-import gameList from "../../CFDGames.js";
-import scoreboardList from "../../CFDScoreboard.js";
-import conferenceList from "../../CFDConferences.js";
-//import gameList from "../../ncaafevents.json";
-//import oddsList from "../../oddsspreads.json";
-//import { Register } from "#db/queries/users";
 await db.connect();
 await seed();
 await db.end();
@@ -18,9 +6,7 @@ async function seed() {
   await seedTeams();
   await seedGames();
   /* await seedScoreboards();*/
-  /* await seedScoreboards();*/
 }
-
 async function seedTeams() {
   try {
     for (const team of teamList) {
@@ -29,13 +15,12 @@ async function seedTeams() {
         team.school,
         team.mascot,
         team.abbreviation,
-        team.division,
         team.conference,
+        team.division,
         team.classification,
         team.color,
         team.alternateColor,
-        `{${team.logos}}`,
-        `{${team.logos}}`,
+        team.logos,
         team.location.id
       );
     }
@@ -43,13 +28,9 @@ async function seedTeams() {
     console.error(e);
   }
 }
-
 async function seedGames() {
   try {
-    const games = await getGamesByYear(2025);
-    for (const game of games) {
-    const games = await getGamesByYear(2025);
-    for (const game of games) {
+    for (const game of gameList) {
       await createGame(
         game.id,
         game.season,
@@ -59,14 +40,15 @@ async function seedGames() {
         game.completed,
         game.neutralSite,
         game.conferenceGame,
+        game.homeTeam,
+        game.homeConference,
         game.homeId,
-        game.homePoints ? null : 0,
-        game.homeLineScores ? null : 0,
-        game.homePoints ? null : 0,
-        game.homeLineScores ? null : 0,
+        game.homePoints,
+        game.homeLineScores,
+        game.awayTeam,
+        game.awayConference,
         game.awayId,
-        game.awayPoints ? null : 0,
-        game.awayPoints ? null : 0,
+        game.awayPoints,
         game.awayLineScores
       );
     }
@@ -74,16 +56,3 @@ async function seedGames() {
     console.error(e);
   }
 }
-
-async function seedScoreboards() {
-  // try {
-  for (const sb of scoreboardList) {
-    console.log(`scoreboard.id ${sb.id}`);
-    await createScoreboard(sb);
-  }
-  //
-
-  // console.error(e);
-  // }
-}
-// //
