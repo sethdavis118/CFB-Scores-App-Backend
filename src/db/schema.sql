@@ -41,9 +41,13 @@ CREATE TABLE games (
     completed BOOLEAN,
     neutral_site BOOLEAN,
     conference_game BOOLEAN,
+    homeTeam TEXT,
+    homeConference TEXT,
     home_team_id INT NOT NULL,
     home_points INT,
     home_qtr_scores INT[],
+    awayTeam TEXT,
+    awayConference TEXT,
     away_team_id INT NOT NULL,
     away_points INT,
     away_qtr_scores INT[]
@@ -53,9 +57,12 @@ CREATE TABLE user_bets (
     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
     game_id INT, -- Had to remove the reference here. It would be nice to fix that eventually. - Seth
     team_id INT, 
+    favored_team INT, 
     amount INT,
     odds TEXT,
+    win_status BOOLEAN,
     time_stamp TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    -- week INT REFERENCES games(season_week),
     UNIQUE (user_id, game_id)
 );
 
@@ -69,9 +76,8 @@ CREATE TABLE leaderboard (
     weekly_losses INT DEFAULT 0,
     all_time_wins INT DEFAULT 0,
     all_time_losses INT DEFAULT 0,
-    total_amount_won INT DEFAULT 0,
-    UNIQUE (user_id, username)
-);
+    total_amount_won INT DEFAULT 0
+    );
 
 COMMIT;
 TRUNCATE user_bets, teams, games, users, leaderboard RESTART IDENTITY CASCADE;

@@ -12,13 +12,18 @@ export async function GetGameById(id) {
   const game = await db.query(sql, [id]);
   return game;
 }
+
 export async function GetGamesByTeam(team_id) {
   const sql = `SELECT * FROM games WHERE home_team_id = $1 OR away_team_id = $1`;
-  const {
-    rows: [games],
-  } = await db.query(sql, [team_id]);
+  const { rows: games } = await db.query(sql, [team_id]);
   return games;
 }
+
+// export async function GetGamesByTeamName(team_name) {
+//   const sql = `SELECT * FROM games WHERE homeTeam = $1 OR awayTeam = $1`;
+//   const { rows: games } = await db.query(sql, [team_name]);
+//   return games;
+// }
 
 export async function GetGamesByWeek(season_week) {
   const sql = `SELECT * FROM games WHERE season_week = $1 ORDER BY start_date ASC`;
@@ -32,19 +37,21 @@ export async function getGamesByYear(year) {
   return games;
 }
 
-//no conference in games table, will adjust if needed
-// export async function GetGamesByConference(conference) {
-//   const sql = `SELECT * FROM games
-//     JOIN teams AS home_team ON games.home_team_id = home_team.id
-//     JOIN teams AS away_team ON games.away_team_id = away_team.id
-//     WHERE home_team.conference = $1 OR away_team.conference = $1`;
-//   const { rows: games } = await db.query(sql, [conference]);
-//   return games;
-// }
+export async function GetGamesByConference(conference) {
+  const sql = `SELECT * FROM games WHERE homeConference = $1 OR awayConference = $1`;
+  const { rows: games } = await db.query(sql, [conference]);
+  return games;
+}
 
 export async function GetGamesBySeasonType(season_type) {
   const sql = `SELECT * FROM games WHERE season_type = $1`;
   const { rows: games } = await db.query(sql, [season_type]);
+  return games;
+}
+
+export async function GetGamesByConferenceAndWeek(conference, week) {
+  const sql = `SELECT * FROM games WHERE (homeConference = $1 OR awayConference = $1) AND season_week = $2`;
+  const { rows: games } = await db.query(sql, [conference, week]);
   return games;
 }
 
@@ -63,9 +70,13 @@ export async function createGame(
   completed,
   neutral_site,
   conference_game,
+  homeTeam,
+  homeConference,
   home_team_id,
   home_points,
   home_qtr_scores,
+  awayTeam,
+  awayConference,
   away_team_id,
   away_points,
   away_qtr_scores
@@ -80,13 +91,17 @@ export async function createGame(
       completed,
       neutral_site,
       conference_game,
+      homeTeam,
+      homeConference,
       home_team_id,
       home_points,
       home_qtr_scores,
+      awayTeam,
+      awayConference,
       away_team_id,
       away_points,
       away_qtr_scores
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11, $12, $13, $14) RETURNING*
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,$11, $12, $13, $14, $15, $16, $17, $18) RETURNING*
     `;
   //console.log(sql);
   const game = await db.query(sql, [
@@ -98,12 +113,25 @@ export async function createGame(
     completed,
     neutral_site,
     conference_game,
+    homeTeam,
+    homeConference,
     home_team_id,
     home_points,
     `{${home_qtr_scores}}`,
+    awayTeam,
+    awayConference,
     away_team_id,
     away_points,
     `{${away_qtr_scores}}`,
   ]);
   return game;
+}
+
+export async function editGameIsCompleted(id, homePoints, awayPoints) {
+  const sql =
+    "UPDATE games SET completed = true, home_points = $2, away_points = $3 WHERE game_id = $1 RETURNING *";
+  const {
+    rows: [updatedGame],
+  } = await db.query(sql, [id, homePoints, awayPoints]);
+  return updatedGame;
 }
