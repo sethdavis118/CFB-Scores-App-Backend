@@ -4,7 +4,6 @@ export async function createLeaderboard(
   user_id,
   username,
   position = 0,
-  total_bets = 0,
   weekly_wins = 0,
   weekly_losses = 0,
   all_time_wins = 0,
@@ -13,15 +12,14 @@ export async function createLeaderboard(
 ) {
   const sql = `
     INSERT INTO leaderboard (
-      user_id, username, position, total_bets, weekly_wins, weekly_losses, 
+      user_id, username, position, weekly_wins, weekly_losses, 
       all_time_wins, all_time_losses, total_amount_won
     )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
     ON CONFLICT (user_id)
     DO UPDATE SET
       username = EXCLUDED.username, -- keep username updated
       position = EXCLUDED.position,
-      total_bets = leaderboard.total_bets + EXCLUDED.total_bets,
       weekly_wins = leaderboard.weekly_wins + EXCLUDED.weekly_wins,
       weekly_losses = leaderboard.weekly_losses + EXCLUDED.weekly_losses,
       all_time_wins = leaderboard.all_time_wins + EXCLUDED.all_time_wins,
@@ -36,7 +34,6 @@ export async function createLeaderboard(
     user_id,
     username,
     position,
-    total_bets,
     weekly_wins,
     weekly_losses,
     all_time_wins,

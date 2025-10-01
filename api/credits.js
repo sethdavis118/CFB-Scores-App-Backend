@@ -9,9 +9,8 @@ const router = express.Router();
 export default router;
 
 // How each user gets credits each week
-// router.get("/:user_id", async (req, res) => {
-//   const { user_id } = req.params;
-
+router.get("/:user_id", async (req, res) => {
+  const { user_id } = req.params;
 
   try {
     const credits = await getUserCredits(user_id);
