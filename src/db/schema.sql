@@ -7,8 +7,8 @@ DROP TABLE IF EXISTS leaderboard CASCADE;
 
 
 CREATE TABLE teams (
-    id SERIAL PRIMARY KEY,
-    team_id INT,
+    id SERIAL,
+    team_id INT PRIMARY KEY,
     school TEXT,
     mascot TEXT,
     abbreviation TEXT,
@@ -25,7 +25,7 @@ CREATE TABLE users (
     username VARCHAR(100) UNIQUE NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(100) NOT NULL,
-    favorite_team INT REFERENCES teams(id) ON DELETE SET NULL,
+    favorite_team INT REFERENCES teams(team_id) ON DELETE SET NULL,
     favorite_conference TEXT,
     bets INT[],
     credits INT DEFAULT 500,
