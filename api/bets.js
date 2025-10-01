@@ -6,6 +6,7 @@ import {
   createBet,
   deleteBet,
   editBetWinStatus,
+  getBetsById,
   getBetsByUser,
 } from "#src/queries/bets";
 
@@ -23,17 +24,31 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/place_bet", async (req, res) => {
-  const user = req.user;
-  const { gameId, teamId, favoredTeamId, amount, betSpread } = req.body;
-  const bet = createBet(
-    user.id,
-    gameId,
-    teamId,
-    favoredTeamId,
-    amount,
-    betSpread
-  );
-  return res.status(201).send(bet);
+  try {
+    const user = req.user;
+    const { gameId, teamId, favoredTeamId, amount, betSpread } = req.body;
+    const userBets = getBetsByUser(user.id);
+
+    // if (userBets.contains(gameId)) {
+    //   return res
+    //     .status(400)
+    //     .send("Can't place multiple bets on the same game.");
+    // }
+    const bet = createBet(
+      user.id,
+      gameId,
+      teamId,
+      favoredTeamId,
+      amount,
+      betSpread
+    );
+    return res.status(201).send(bet);
+  } catch (error) {
+    return res.status(500).json({ e: "There was an error" });
+  }
+  //   if (Number.isNaN(yearNum) || !Number.isInteger(yearNum)) {
+  //   return res.status(400).json({ error: "year must be an integer" });
+  // }
 });
 
 router.delete("/delete/:id", async (req, res) => {
@@ -47,6 +62,13 @@ router.put("/update/:id", async (req, res) => {
   const { winStatus } = req.body;
   const updatedBet = await editBetWinStatus(id, winStatus);
   return res.status(201).send(updatedBet);
+});
+
+router.get("/bet/:id", async (req, res) => {
+  const user = req.user;
+  const { id } = req.params;
+  const bet = await getBetsById(id);
+  res.send(bet);
 });
 
 // router.post("/login", requireBody(["email", "password"]), async (req, res) => {

@@ -1,5 +1,9 @@
 import express from "express";
-import { getUserCredits, useCredits } from "#src/queries/credits";
+import {
+  getUserCredits,
+  useCredits,
+  returnCredits,
+} from "#src/queries/credits";
 const router = express.Router();
 export default router;
 
@@ -40,5 +44,19 @@ router.get("/:user_id/raw", async (req, res) => {
   } catch (err) {
     console.error("Error fetching user credits:", err);
     res.status(500).json({ message: "Error fetching credits" });
+  }
+});
+
+// Returning your credits
+router.put("/return", async (req, res) => {
+  const user = req.user;
+  const { amount } = req.body;
+
+  try {
+    const remainingCredits = await returnCredits(user.id, amount);
+    res.json({ credits: remainingCredits });
+  } catch (err) {
+    console.error("Error using credits:", err);
+    res.status(400).json({ message: err.message });
   }
 });

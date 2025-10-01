@@ -29,3 +29,14 @@ export async function useCredits(user_id, amount) {
   );
   return credits - amount;
 }
+
+export async function returnCredits(user_id, amount) {
+  // const credits = await getUserCredits(user_id);
+  // if (credits < amount) throw new Error("Not enough credits");
+
+  const { rows: credits } = await db.query(
+    "UPDATE users SET credits = credits + $2 WHERE id = $1 RETURNING *",
+    [user_id, amount]
+  );
+  return credits;
+}
