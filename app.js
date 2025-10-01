@@ -17,13 +17,22 @@ app.use(getUserFromToken);
 import usersRouter from "./api/users.js";
 import gamesRouter from "./api/games.js";
 import teamsRouter from "./api/teams.js";
-//import oddsRouter from "./api/odds.js";
-//import { scoreboardsRouter } from "#api/scoreboards";
+import betsRouter from "./api/bets.js";
+import futureGameRouter from "./api/future_games.js";
+import leaderboardRouter from "./api/leaderboard.js";
+import rankingsRouter from "./api/rankings.js";
+import creditsRouter from "./api/credits.js";
+import scoreboardsRouter from "./api/scoreboards.js";
 
 app.use("/users", usersRouter);
 app.use("/games", gamesRouter);
 app.use("/teams", teamsRouter);
-app / use("scoreboards", scoreboardsRouter);
+app.use("/scoreboards", scoreboardsRouter);
+app.use("/bets", betsRouter);
+app.use("/upcoming", futureGameRouter);
+app.use("/leaderboard", leaderboardRouter);
+app.use("/rankings", rankingsRouter);
+app.use("/credits", creditsRouter);
 
 app.use((err, req, res, next) => {
   switch (err.code) {
