@@ -1,8 +1,6 @@
 import db from "../db/client.js";
 import dotenv from "dotenv";
 dotenv.config({ path: "#/.env" });
-import dotenv from "dotenv";
-dotenv.config({ path: "#/.env" });
 
 export async function GetGames() {
   const sql = ` SELECT * FROM games`;

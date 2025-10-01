@@ -3,30 +3,10 @@ const router = express.Router();
 export default router;
 import requireBody from "#middleware/requireBody";
 import requireUser from "#middleware/requireUser";
-import {
-  createUSer,
-  getUserByEmailAndPassword,
-  getUserById,
-} from "#src/queries/users";
+import {createUSer, getUserByEmailAndPassword,getUserById,} from "#src/queries/users";
 import { createToken, verifyToken } from "#utils/jwt";
+import { createLeaderboard } from "#src/queries/leaderboard";
 
-// router
-//   .route("/register")
-//   .post(requireBody(["username", "email", "password"]), async (req, res) => {
-//     console.log("im here")
-//     const { username, email, password, favorite_team, favorite_conference } =
-//       req.body;
-//     const user = await createUSer(
-//       username,
-//       email,
-//       password,
-//       favorite_team,
-//       favorite_conference
-//     );
-// console.log("made it here")
-//     const token = createToken({ id: user.id });
-//     res.status(201).send(token);
-//   });
 
 router.post(
   "/register",
@@ -47,7 +27,8 @@ router.post(
       if (!user || !user.id) {
         return res.status(400).json({ error: "User creation failed" });
       }
-
+      await createLeaderboard(user.id, user.username);
+      
       const token = createToken({ id: user.id });
       res.status(201).json({ token });
     } catch (err) {
@@ -57,32 +38,15 @@ router.post(
   }
 );
 
-// router
-//   .route("/login")
-//   .post(requireBody(["email", "password"]), async (req, res) => {
-//     const { email, password } = req.body;
-//     const user = await getUserByEmailAndPassword(email, password);
-//     if (!user) {
-//       return res
-//         .status(401)
-//         .send("Invalid email, password, or both. Who knows for sure ");
-//     }
-
-//     const token = createToken({ id: user.id });
-//     res.status(token);
-//   });
-
 router.post("/login", requireBody(["email", "password"]), async (req, res) => {
   const { email, password } = req.body;
   const user = await getUserByEmailAndPassword(email, password);
 
   if (!user) {
-    return res
-      .status(401)
-      .json({
-        error:
-          "Invalid email, password, or both. Maybe you should start writing these down",
-      });
+    return res.status(401).json({
+      error:
+        "Invalid email, password, or both. Maybe you should start writing these down",
+    });
   }
 
   const token = createToken({ id: user.id });
