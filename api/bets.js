@@ -6,6 +6,7 @@ import {
   createBet,
   deleteBet,
   editBetWinStatus,
+  getBetsById,
   getBetsByUser,
   getBetsByWeek,
 } from "#src/queries/bets";
@@ -13,24 +14,36 @@ import {
 //all bets by user
 router.get("/", async (req, res) => {
   const user = req.user;
-  console.log(req.user);
-  // console.log(req);
   const bets = await getBetsByUser(user.id);
   res.send(bets);
 });
 
 router.post("/place_bet", async (req, res) => {
-  const user = req.user;
-  const { gameId, teamId, favoredTeamId, amount, betSpread } = req.body;
-  const bet = createBet(
-    user.id,
-    gameId,
-    teamId,
-    favoredTeamId,
-    amount,
-    betSpread
-  );
-  return res.status(201).send(bet);
+  try {
+    const user = req.user;
+    const { gameId, teamId, favoredTeamId, amount, betSpread } = req.body;
+    const userBets = getBetsByUser(user.id);
+
+    // if (userBets.contains(gameId)) {
+    //   return res
+    //     .status(400)
+    //     .send("Can't place multiple bets on the same game.");
+    // }
+    const bet = createBet(
+      user.id,
+      gameId,
+      teamId,
+      favoredTeamId,
+      amount,
+      betSpread
+    );
+    return res.status(201).send(bet);
+  } catch (error) {
+    return res.status(500).json({ e: "There was an error" });
+  }
+  //   if (Number.isNaN(yearNum) || !Number.isInteger(yearNum)) {
+  //   return res.status(400).json({ error: "year must be an integer" });
+  // }
 });
 
 //bets by week
@@ -63,3 +76,12 @@ router.put("/update/:id", async (req, res) => {
   const updatedBet = await editBetWinStatus(id, winStatus);
   return res.status(201).send(updatedBet);
 });
+
+
+router.get("/bet/:id", async (req, res) => {
+  const user = req.user;
+  const { id } = req.params;
+  const bet = await getBetsById(id);
+  res.send(bet);
+});
+

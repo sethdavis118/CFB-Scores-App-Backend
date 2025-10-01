@@ -2,7 +2,11 @@ import express from "express";
 const router = express.Router();
 export default router;
 
-import { getLeaderboard } from "#src/queries/leaderboard";
+import {
+  editTotalAmountWon,
+  editWeeklyAmountWon,
+  getLeaderboard,
+} from "#src/queries/leaderboard";
 
 // GET leaderboard
 router.get("/", async (req, res) => {
@@ -13,6 +17,14 @@ router.get("/", async (req, res) => {
     console.error("Error fetching leaderboard:", err);
     res.status(500).json({ message: "Error fetching leaderboard" });
   }
+});
+
+router.route("/update").put(async (req, res) => {
+  const { amount_won } = req.body;
+  const user = req.user;
+  await editTotalAmountWon(user.id, amount_won);
+  const updatedUser = await editWeeklyAmountWon(user.id, amount_won);
+  return res.status(200).send(updatedUser);
 });
 
 //create leaderboard
