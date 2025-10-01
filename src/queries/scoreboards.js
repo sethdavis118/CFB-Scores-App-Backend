@@ -13,7 +13,6 @@ export async function getScoreboard(GameId) {
 }
 
 export async function createScoreboard(sb) {
-  console.log(sb);
   try {
     const sql = `
     INSERT INTO scoreboards (
