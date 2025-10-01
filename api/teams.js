@@ -6,14 +6,27 @@ import requireBody from "#middleware/requireBody";
 import {
   GetTeams,
   GetTeamById,
+  GetTeamsByYear,
   GetTeamsByConference,
   GetTeamByTeamId,
+  GetConferences,
 } from "#src/queries/teams";
 //all teams
 router.route("/").get(async (req, res) => {
   const teams = await GetTeams();
   res.send(teams);
 });
+
+router.route("/conferences").get(async (req, res) => {
+  try {
+    const conferences = await GetConferences();
+    res.send(conferences);
+  } catch (error) {
+    console.error("Error fetching conferences:", error);
+    res.status(500).send("Server error");
+  }
+});
+
 //teams by conference
 router.route("/conference/:conference").get(async (req, res) => {
   try {
@@ -25,6 +38,15 @@ router.route("/conference/:conference").get(async (req, res) => {
   }
 });
 
+router.route("/year/:year").get(async (req, res) => {
+  try {
+    const teams = await GetTeamsByYear(req.params.year);
+    res.send(teams);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server error");
+  }
+});
 // I added this so teams can be fetched from games. -Seth
 router.route("/team_id/:team_id").get(async (req, res) => {
   try {
@@ -35,6 +57,7 @@ router.route("/team_id/:team_id").get(async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+
 //teams by id
 router.param("id", async (req, res, next, id) => {
   const team = await GetTeamById(id);

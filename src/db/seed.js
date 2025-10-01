@@ -1,6 +1,7 @@
 import db from "./client.js";
 import { createTeam } from "../queries/teams.js";
 import { createGame, getGamesByYear } from "../queries/games.js";
+import { createGame, getGamesByYear } from "../queries/games.js";
 import { createScoreboard } from "../queries/scoreboards.js";
 import teamList from "../../CFDTeams.js";
 import gameList from "../../CFDGames.js";
@@ -16,6 +17,7 @@ console.log("🌱 Database seeded.");
 async function seed() {
   await seedTeams();
   await seedGames();
+  /* await seedScoreboards();*/
   /* await seedScoreboards();*/
 }
 
@@ -33,6 +35,7 @@ async function seedTeams() {
         team.color,
         team.alternateColor,
         `{${team.logos}}`,
+        `{${team.logos}}`,
         team.location.id
       );
     }
@@ -43,6 +46,8 @@ async function seedTeams() {
 
 async function seedGames() {
   try {
+    const games = await getGamesByYear(2025);
+    for (const game of games) {
     const games = await getGamesByYear(2025);
     for (const game of games) {
       await createGame(
@@ -57,7 +62,10 @@ async function seedGames() {
         game.homeId,
         game.homePoints ? null : 0,
         game.homeLineScores ? null : 0,
+        game.homePoints ? null : 0,
+        game.homeLineScores ? null : 0,
         game.awayId,
+        game.awayPoints ? null : 0,
         game.awayPoints ? null : 0,
         game.awayLineScores
       );
