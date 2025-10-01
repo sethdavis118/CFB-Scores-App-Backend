@@ -1,4 +1,4 @@
-import db from "../db/client.js";
+import db from "#src/db/client";
 
 export async function getScoreboard() {
   const CFBD_API_KEY = process.env.CFBD_API_KEY;
