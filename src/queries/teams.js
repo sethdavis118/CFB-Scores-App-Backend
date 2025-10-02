@@ -11,7 +11,7 @@ export async function GetTeams() {
 }
 
 export async function GetTeamById(id) {
-  const sql = "SELECT * FROM teams WHERE id = $1";
+  const sql = "SELECT * FROM teams WHERE team_id = $1";
   const {
     rows: [team],
   } = await db.query(sql, [id]);
