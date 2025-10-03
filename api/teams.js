@@ -60,12 +60,22 @@ router.route("/team_id/:team_id").get(async (req, res) => {
 
 //teams by id
 router.param("id", async (req, res, next, id) => {
-  const team = await GetTeamById(id);
-  if (!team) return res.status(404).send("Team not found");
-  req.team = team;
-  next();
+  try {
+    const team = await GetTeamById(id);
+    if (!team) return res.status(404).send("Team not found");
+    req.team = team;
+    next();
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
 
 router.route("/:id").get((req, res) => {
-  res.send(req.team);
+  try {
+    res.send(req.team);
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });

@@ -1,5 +1,5 @@
 import db from "#src/db/client";
-import { useCredits } from "#src/queries/credits"
+import { useCredits } from "#src/queries/credits";
 
 export async function createBet(
   user_id,
@@ -51,7 +51,7 @@ export async function getBetsById(bet_id) {
 }
 
 export async function getBetsByUser(user_id) {
-  const sql = `SELECT * FROM user_bets WHERE user_id = $1`;
+  const sql = `SELECT * FROM user_bets WHERE user_id = $1 ORDER BY time_stamp DESC`;
   const { rows: bets } = await db.query(sql, [user_id]);
   return bets;
 }
@@ -74,4 +74,3 @@ export async function getBetsByWeek(user_id, week) {
 //   const { rows: [bet] } = await db.query(sql, [user_id, gameId, teamId, amount, betSpread]);
 //   return bet;
 // }
-

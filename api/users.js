@@ -3,10 +3,13 @@ const router = express.Router();
 export default router;
 import requireBody from "#middleware/requireBody";
 import requireUser from "#middleware/requireUser";
-import {createUSer, getUserByEmailAndPassword,getUserById,} from "#src/queries/users";
+import {
+  createUSer,
+  getUserByEmailAndPassword,
+  getUserById,
+} from "#src/queries/users";
 import { createToken, verifyToken } from "#utils/jwt";
 import { createLeaderboard } from "#src/queries/leaderboard";
-
 
 router.post(
   "/register",
@@ -28,7 +31,7 @@ router.post(
         return res.status(400).json({ error: "User creation failed" });
       }
       await createLeaderboard(user.id, user.username);
-      
+
       const token = createToken({ id: user.id });
       res.status(201).json({ token });
     } catch (err) {
@@ -39,18 +42,23 @@ router.post(
 );
 
 router.post("/login", requireBody(["email", "password"]), async (req, res) => {
-  const { email, password } = req.body;
-  const user = await getUserByEmailAndPassword(email, password);
+  try {
+    const { email, password } = req.body;
+    const user = await getUserByEmailAndPassword(email, password);
 
-  if (!user) {
-    return res.status(401).json({
-      error:
-        "Invalid email, password, or both. Maybe you should start writing these down",
-    });
+    if (!user) {
+      return res.status(401).json({
+        error:
+          "Invalid email, password, or both. Maybe you should start writing these down",
+      });
+    }
+
+    const token = createToken({ id: user.id });
+    res.status(200).json({ token });
+  } catch (error) {
+    console.error(error);
+    res.send(error);
   }
-
-  const token = createToken({ id: user.id });
-  res.status(200).json({ token });
 });
 
 router.get("/me", async (req, res) => {

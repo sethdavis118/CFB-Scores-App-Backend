@@ -11,5 +11,10 @@ if (process.env.DEBUG) {
   console.log("Debugging output");
 }
 */
-const db = new pg.Client(process.env.DATABASE_URL);
+const db = new pg.Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false, // Render requires SSL but allows self-signed certs
+  },
+});
 export default db;

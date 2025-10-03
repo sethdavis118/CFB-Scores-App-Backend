@@ -13,9 +13,14 @@ import {
 
 //all bets by user
 router.get("/", async (req, res) => {
-  const user = req.user;
-  const bets = await getBetsByUser(user.id);
-  res.send(bets);
+  try {
+    const user = req.user;
+    const bets = await getBetsByUser(user.id);
+    res.send(bets);
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
 
 router.post("/place_bet", async (req, res) => {
@@ -65,23 +70,36 @@ router.get("/week/:week", async (req, res) => {
 });
 
 router.delete("/delete/:id", async (req, res) => {
-  const { id } = req.params;
-  const deleteRes = deleteBet(id);
-  return res.status(200).send(deleteRes);
+  try {
+    const { id } = req.params;
+    const deleteRes = deleteBet(id);
+    return res.status(200).send(deleteRes);
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
 
 router.put("/update/:id", async (req, res) => {
-  const { id } = req.params;
-  const { winStatus } = req.body;
-  const updatedBet = await editBetWinStatus(id, winStatus);
-  return res.status(201).send(updatedBet);
+  try {
+    const { id } = req.params;
+    const { winStatus } = req.body;
+    const updatedBet = await editBetWinStatus(id, winStatus);
+    return res.status(201).send(updatedBet);
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
-
 
 router.get("/bet/:id", async (req, res) => {
-  const user = req.user;
-  const { id } = req.params;
-  const bet = await getBetsById(id);
-  res.send(bet);
+  try {
+    const user = req.user;
+    const { id } = req.params;
+    const bet = await getBetsById(id);
+    res.send(bet);
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
-

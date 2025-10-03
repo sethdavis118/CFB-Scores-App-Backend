@@ -17,9 +17,14 @@ import {
 
 //all games
 router.route("/").get(async (req, res) => {
-  req.body = {};
-  const games = await GetGames();
-  res.send(games);
+  try {
+    req.body = {};
+    const games = await GetGames();
+    res.send(games);
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
 
 router.get("/", async (req, res) => {
@@ -48,40 +53,70 @@ router.get("/", async (req, res) => {
 
 //games by year
 router.route("/").get(async (req, res) => {
-  const year = req.query;
-  const classification = req.classification;
-  const data = await getGamesByYear_api(year);
-  const games = data.json();
-  res.send(games);
+  try {
+    const year = req.query;
+    const classification = req.classification;
+    const data = await getGamesByYear_api(year);
+    const games = data.json();
+    res.send(games);
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
 
 //games by year and week
 router.route("/year/:year/week/:week").get(async (req, res) => {
-  const games = await GetGamesByYearAndWeek(req.params.year, req.params.week);
-  res.send(games);
+  try {
+    const games = await GetGamesByYearAndWeek(req.params.year, req.params.week);
+    res.send(games);
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
 
 //games by id
 router.param("id", async (req, res, next, id) => {
-  const game = await GetGameById(id);
-  if (!game) return res.status(404).send("No game available");
-  req.game = game;
-  next();
+  try {
+    const game = await GetGameById(id);
+    if (!game) return res.status(404).send("No game available");
+    req.game = game;
+    next();
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
 
 router.route("/:id").get((req, res) => {
-  res.send(req.game);
+  try {
+    res.send(req.game);
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
 
 router.route("/:id/games").get(async (req, res) => {
-  const games = await GetGames(req.user.id);
-  res.send(games);
+  try {
+    const games = await GetGames(req.user.id);
+    res.send(games);
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
 
 //games by team
 router.route("/:team_id").get(async (req, res) => {
-  const games = await GetGamesByTeam(req.params.id);
-  res.send(games);
+  try {
+    const games = await GetGamesByTeam(req.params.id);
+    res.send(games);
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
 
 //games by team name
@@ -129,27 +164,47 @@ router.route("/conference/:conference/week/:week").get(async (req, res) => {
 
 //games by season type
 router.route("/season/:season").get(async (req, res) => {
-  const games = await GetGamesBySeasonType(req.params.season);
-  res.send(games);
+  try {
+    const games = await GetGamesBySeasonType(req.params.season);
+    res.send(games);
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
 
 //games by id
 router.param("gameId", async (req, res, next, id) => {
-  const game = await GetGameById(id);
-  if (!game) return res.status(404).send("No game available");
-  req.game = game;
-  next();
+  try {
+    const game = await GetGameById(id);
+    if (!game) return res.status(404).send("No game available");
+    req.game = game;
+    next();
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
 
 router.route("/:gameId").get((req, res) => {
-  res.send(req.game);
+  try {
+    res.send(req.game);
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
 
 router.put("/update/:id", async (req, res) => {
-  const { id } = req.params;
-  const { awayPoints, homePoints } = req.body;
-  const updatedGame = await editGameIsCompleted(id, awayPoints, homePoints);
-  return res.status(200).send(updatedGame);
+  try {
+    const { id } = req.params;
+    const { awayPoints, homePoints } = req.body;
+    const updatedGame = await editGameIsCompleted(id, awayPoints, homePoints);
+    return res.status(200).send(updatedGame);
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
 
 //likely not needed

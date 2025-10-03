@@ -20,11 +20,16 @@ router.get("/", async (req, res) => {
 });
 
 router.route("/update").put(async (req, res) => {
-  const { amount_won } = req.body;
-  const user = req.user;
-  await editTotalAmountWon(user.id, amount_won);
-  const updatedUser = await editWeeklyAmountWon(user.id, amount_won);
-  return res.status(200).send(updatedUser);
+  try {
+    const { amount_won } = req.body;
+    const user = req.user;
+    await editTotalAmountWon(user.id, amount_won);
+    const updatedUser = await editWeeklyAmountWon(user.id, amount_won);
+    return res.status(200).send(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
 
 //create leaderboard

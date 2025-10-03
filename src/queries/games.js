@@ -58,9 +58,13 @@ export async function createGame(
   completed,
   neutral_site,
   conference_game,
+  homeTeam,
+  homeConference,
   home_team_id,
   home_points,
   home_qtr_scores,
+  awayTeam,
+  awayConference,
   away_team_id,
   away_points,
   away_qtr_scores
@@ -75,13 +79,17 @@ export async function createGame(
       completed,
       neutral_site,
       conference_game,
+      homeTeam,
+      homeConference,
       home_team_id,
       home_points,
       home_qtr_scores,
+      awayTeam,
+      awayConference,
       away_team_id,
       away_points,
       away_qtr_scores
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING*
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18) RETURNING*
     `;
   //console.log(sql);
   const game = await db.query(sql, [
@@ -93,9 +101,13 @@ export async function createGame(
     completed,
     neutral_site,
     conference_game,
+    homeTeam,
+    homeConference,
     home_team_id,
     home_points ? null : 0,
     Array.isArray(home_qtr_scores) ? home_qtr_scores : null,
+    awayTeam,
+    awayConference,
     away_team_id,
     away_points ? null : 0,
     Array.isArray(away_qtr_scores) ? away_qtr_scores : null,

@@ -1,3 +1,11 @@
+import db from "./client.js";
+import { createTeam } from "../queries/teams.js";
+import { createGame } from "../queries/games.js";
+import { createScoreboard } from "../queries/scoreboards.js";
+import teamList from "../../CFDTeams.js";
+import gameList from "../../CFDGames.js";
+import scoreboardList from "../../CFDScoreboard.js";
+import conferenceList from "../../CFDConferences.js";
 await db.connect();
 await seed();
 await db.end();

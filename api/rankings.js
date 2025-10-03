@@ -6,8 +6,13 @@ import { GetRankings } from "#src/queries/rankings";
 
 //all rankings
 router.route("/").get(async (req, res) => {
-  const rankings = await GetRankings();
-  res.send(rankings);
+  try {
+    const rankings = await GetRankings();
+    res.send(rankings);
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
 });
 
 //ranking by team id
