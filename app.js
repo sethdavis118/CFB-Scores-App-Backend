@@ -11,7 +11,7 @@ app.use(
       credentials: true,
     },
     {
-      origin: "https://sidelinecfb.netlify.app/",
+      origin: "https://sidelinecfb.netlify.app",
       credentials: true,
     }
   )
