@@ -51,4 +51,7 @@ app.use((err, req, res, next) => {
   res.status(500).send("Not saying I blame you, but something went wrong.");
 });
 
+import { startScoreboardUpdater } from "./src/jobs/scoreboardUpdater.js";
+startScoreboardUpdater();
+
 export default app;
