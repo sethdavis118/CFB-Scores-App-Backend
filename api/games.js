@@ -10,7 +10,7 @@ import {
   getGamesByYear,
   GetGamesBySeasonType,
   //GetGamesByYearAndWeek,
-  //editGameIsCompleted,
+  editGameIsCompleted,
   GetGamesByConference,
   //GetGamesByConferenceAndWeek,
 } from "#src/queries/games";
