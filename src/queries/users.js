@@ -40,16 +40,16 @@ export async function getUserByEmailAndPassword(email, password) {
 }
 
 export async function getUserDataByEmailAndPassword(email, password) {
-  const sql = "SELECT * FROM users WHERE email = $1";
+  const sql = "SELECT * FROM users WHERE email = $1 AND password = $2";
 
   const {
     rows: [user],
-  } = await db.query(sql, [email]);
+  } = await db.query(sql, [email, password]);
   if (!user) return null;
 
   const isValid = await bcrypt.compare(password, user.password);
   if (!isValid) return null;
-  return user;
+  return rows[0];
 }
 
 export async function getUserById(id) {

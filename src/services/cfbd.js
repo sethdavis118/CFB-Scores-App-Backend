@@ -1,17 +1,26 @@
 // src/services/cfbd.js
 import fetch from "node-fetch";
-import dotenv from "dotenv";
-dotenv.config();
 
-const API_BASE =
+const CFBD_API_BASE =
   process.env.CFBD_API_BASE || "https://apinext.collegefootballdata.com";
-const API_KEY = process.env.CFBD_API_KEY; // set this in your env
+const CFBD_API_KEY = process.env.CFBD_API_KEY;
 
+/**
+ * Fetch scoreboard from CFBD
+ * @param {number} year - season year
+ * @param {string} classification - usually "fbs"
+ * @returns {Promise<Array>} games array
+ */
 export async function fetchScoreboard(year, classification = "fbs") {
-  const url = `${API_BASE}/scoreboard?year=${year}&classification=${classification}`;
+  const url = `${CFBD_API_BASE}/scoreboard?year=${year}&classification=${classification}`;
   const res = await fetch(url, {
-    headers: { Authorization: `Bearer ${API_KEY}` },
+    headers: { Authorization: `Bearer ${CFBD_API_KEY}` },
   });
-  if (!res.ok) throw new Error(`CFBD API failed: ${res.status}`);
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`CFBD scoreboard fetch failed: ${res.status} ${text}`);
+  }
+
   return res.json();
 }

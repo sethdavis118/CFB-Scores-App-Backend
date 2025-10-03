@@ -3,6 +3,11 @@ import requireBody from "../middleware/requireBody.js";
 import requireUser from "../middleware/requireUser.js";
 import { createToken, verifyToken } from "../utils/jwt.js";
 import { createLeaderboard } from "../src/queries/leaderboard.js";
+import {
+  createUser,
+  getUserByEmailAndPassword,
+  getUserById,
+} from "../src/queries/users.js";
 
 const usersRouter = express.Router();
 

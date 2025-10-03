@@ -2,14 +2,12 @@ import express from "express";
 import {
   GetGames,
   GetGameById,
-  GetGamesByWeek,
-  GetGamesByYear,
-  GetGamesBySeasonType,
-  GetGamesByConference,
-  GetGamesByYearAndWeek,
-  GetGamesByConferenceAndWeek,
   GetGamesByTeam,
+  GetGamesByWeek,
+  GetGamesByConference,
+  GetGamesBySeasonType,
   editGameIsCompleted,
+  GetGamesByConferenceAndWeek,
 } from "../src/queries/games.js";
 
 const router = express.Router();
