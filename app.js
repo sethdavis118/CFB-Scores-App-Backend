@@ -5,10 +5,16 @@ import getUserFromToken from "./middleware/getUserFromToken.js";
 import cors from "cors";
 
 app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
+  cors(
+    {
+      origin: "http://localhost:5173",
+      credentials: true,
+    },
+    {
+      origin: "https://sidelinecfb.netlify.app/",
+      credentials: true,
+    }
+  )
 );
 
 app.use(express.json());
