@@ -1,4 +1,4 @@
-import db from "#src/db/client";
+import db from "../db/client.js";
 
 export async function getUserCredits(user_id) {
   const {

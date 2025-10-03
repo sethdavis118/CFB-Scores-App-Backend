@@ -3,7 +3,7 @@ import {
   getUserCredits,
   useCredits,
   returnCredits,
-} from "#src/queries/credits";
+} from "../src/queries/credits.js";
 
 const router = express.Router();
 export default router;

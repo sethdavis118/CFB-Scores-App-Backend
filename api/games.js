@@ -1,8 +1,8 @@
 import express from "express";
 const router = express.Router();
 export default router;
-// import requireUser from "#middleware/requireUser";
-// import { getGamesByYear } from "#/db/queries/games";
+import requireUser from "../middleware/requireUser.js";
+
 import {
   GetGames,
   GetGameById,
@@ -13,7 +13,7 @@ import {
   //editGameIsCompleted,
   GetGamesByConference,
   //GetGamesByConferenceAndWeek,
-} from "#src/queries/games";
+} from "../src/queries/games.js";
 
 //all games
 router.route("/").get(async (req, res) => {

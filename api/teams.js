@@ -1,8 +1,8 @@
 import express from "express";
 const router = express.Router();
 export default router;
-import requireUser from "#middleware/requireUser";
-import requireBody from "#middleware/requireBody";
+import requireUser from "../middleware/requireUser.js";
+import requireBody from "../middleware/requireBody.js";
 import {
   GetTeams,
   GetTeamById,
@@ -10,7 +10,7 @@ import {
   GetTeamsByConference,
   GetTeamByTeamId,
   GetConferences,
-} from "#src/queries/teams";
+} from "../src/queries/teams.js";
 //all teams
 router.route("/").get(async (req, res) => {
   const teams = await GetTeams();

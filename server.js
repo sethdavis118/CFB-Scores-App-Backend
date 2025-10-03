@@ -1,17 +1,19 @@
-import app from "#app";
-import db from "#src/db/client";
-import cors from "cors";
+import dotenv from "dotenv";
+dotenv.config();
 
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-);
-const PORT = process.env.PORT ?? 3000;
+import app from "./app.js";
+import db from "./src/db/client.js";
 
-await db.connect();
+const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}...`);
-});
+(async () => {
+  try {
+    await db.connect();
+    app.listen(PORT, () => {
+      console.log(`Backend listening on http://localhost:${PORT}`);
+    });
+  } catch (err) {
+    console.error(`Failed to connec to DB ${err}`);
+    process.exit(1);
+  }
+})();

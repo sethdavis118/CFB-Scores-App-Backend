@@ -2,7 +2,7 @@ import express from "express";
 const router = express.Router();
 export default router;
 
-import { GetRankings } from "#src/queries/rankings";
+import { GetRankings } from "../src/queries/rankings.js";
 
 //all rankings
 router.route("/").get(async (req, res) => {

@@ -1,5 +1,5 @@
-import db from "#src/db/client";
-import { useCredits } from "#src/queries/credits"
+import db from "../db/client.js";
+import { useCredits } from "../queries/credits.js";
 
 export async function createBet(
   user_id,
@@ -74,4 +74,3 @@ export async function getBetsByWeek(user_id, week) {
 //   const { rows: [bet] } = await db.query(sql, [user_id, gameId, teamId, amount, betSpread]);
 //   return bet;
 // }
-

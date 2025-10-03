@@ -9,7 +9,7 @@ import {
   getBetsById,
   getBetsByUser,
   getBetsByWeek,
-} from "#src/queries/bets";
+} from "../src/queries/bets.js";
 
 //all bets by user
 router.get("/", async (req, res) => {
@@ -77,11 +77,9 @@ router.put("/update/:id", async (req, res) => {
   return res.status(201).send(updatedBet);
 });
 
-
 router.get("/bet/:id", async (req, res) => {
   const user = req.user;
   const { id } = req.params;
   const bet = await getBetsById(id);
   res.send(bet);
 });
-

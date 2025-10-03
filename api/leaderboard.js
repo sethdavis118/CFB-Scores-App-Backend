@@ -6,7 +6,7 @@ import {
   editTotalAmountWon,
   editWeeklyAmountWon,
   getLeaderboard,
-} from "#src/queries/leaderboard";
+} from "../src/queries/leaderboard.js";
 
 // GET leaderboard
 router.get("/", async (req, res) => {

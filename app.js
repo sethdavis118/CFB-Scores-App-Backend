@@ -1,8 +1,8 @@
 import express from "express";
-const app = express();
-export default app;
-import getUserFromToken from "./middleware/getUserFromToken.js";
 import cors from "cors";
+import getUserFromToken from "./middleware/getUserFromToken.js";
+
+const app = express();
 
 app.use(
   cors({
@@ -22,17 +22,15 @@ import futureGameRouter from "./api/future_games.js";
 import leaderboardRouter from "./api/leaderboard.js";
 import rankingsRouter from "./api/rankings.js";
 import creditsRouter from "./api/credits.js";
-// import scoreboardsRouter from "./api/scoreboards.js";
 
-app.use("/users", usersRouter);
-app.use("/games", gamesRouter);
-app.use("/teams", teamsRouter);
-// app.use("/scoreboards", scoreboardsRouter);
-app.use("/bets", betsRouter);
-app.use("/upcoming", futureGameRouter);
-app.use("/leaderboard", leaderboardRouter);
-app.use("/rankings", rankingsRouter);
-app.use("/credits", creditsRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/games", gamesRouter);
+app.use("/api/teams", teamsRouter);
+app.use("/api/bets", betsRouter);
+app.use("/api/upcoming", futureGameRouter);
+app.use("/api/leaderboard", leaderboardRouter);
+app.use("/api/rankings", rankingsRouter);
+app.use("/api/credits", creditsRouter);
 
 app.use((err, req, res, next) => {
   switch (err.code) {
@@ -52,3 +50,5 @@ app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).send("Not saying I blame you, but something went wrong.");
 });
+
+export default app;

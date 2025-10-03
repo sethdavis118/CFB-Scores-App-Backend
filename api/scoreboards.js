@@ -1,5 +1,5 @@
-import db from "#src/db/client";
-import { getScoreboard } from "#src/queries/scoreboards";
+import db from "../src/db/client.js";
+import { getScoreboard } from "../src/queries/scoreboards.js";
 
 /* export async function getScoreboards() {
   const sql = `SELECT * FROM scoreboads`;
