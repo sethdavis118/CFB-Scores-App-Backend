@@ -1,7 +1,6 @@
 import bcrypt from "bcrypt";
 import db from "#src/db/client";
 
-
 export async function createUSer(
   username,
   email,
@@ -91,4 +90,19 @@ export async function getUserDataByID(id) {
     rows: [user],
   } = await db.query(sql, [id]);
   return user;
+}
+
+export async function editUser(
+  id,
+  username,
+  email,
+  favoriteTeam,
+  favoriteConf
+) {
+  // Add password later
+  const sql = `UPDATE user SET username = $2, email = $3, favorite_team = $4, favorite_conference = $5 WHERE id = $1 RETURNING id, username, email, favorite_team, favorite_conference`;
+  const {
+    rows: [updatedUser],
+  } = await db.query(sql, [id, username, email, favoriteTeam, favoriteConf]);
+  return updatedUser;
 }

@@ -14,6 +14,7 @@ app.use(
   //   origin: "https://sidelinecfb.netlify.app",
   //   credentials: true,
   // }
+  // Fix the cors so that it's not wide open.
 );
 
 app.use(express.json());
