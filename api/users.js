@@ -7,6 +7,7 @@ import {
   createUSer,
   getUserByEmailAndPassword,
   getUserById,
+  editUser,
 } from "#src/queries/users";
 import { createToken, verifyToken } from "#utils/jwt";
 import { createLeaderboard } from "#src/queries/leaderboard";
@@ -80,5 +81,24 @@ router.get("/me", async (req, res) => {
   } catch (err) {
     console.error("Auth error:", err);
     res.status(401).json({ error: "Invalid token" });
+  }
+});
+
+router.put("/edit", async (req, res) => {
+  try {
+    const { id } = req.user;
+    const { username, email, favoriteTeam, favoriteConf } = req.body; // Add password later
+
+    const editedUser = editUser(
+      id,
+      username,
+      email,
+      favoriteTeam,
+      favoriteConf
+    );
+    res.status(200).send(editedUser);
+  } catch (error) {
+    console.error(error);
+    res.send(error);
   }
 });
