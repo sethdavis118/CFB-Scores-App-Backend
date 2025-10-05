@@ -100,7 +100,7 @@ export async function editUser(
   favoriteConf
 ) {
   // Add password later
-  const sql = `UPDATE user SET username = $2, email = $3, favorite_team = $4, favorite_conference = $5 WHERE id = $1 RETURNING id, username, email, favorite_team, favorite_conference`;
+  const sql = `UPDATE user SET username = $2, email = $3, favorite_team = $4, favorite_conference = $5 WHERE id = $1 RETURNING *`;
   const {
     rows: [updatedUser],
   } = await db.query(sql, [id, username, email, favoriteTeam, favoriteConf]);
