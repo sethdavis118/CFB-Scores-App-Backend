@@ -11,10 +11,13 @@ if (process.env.DEBUG) {
   console.log("Debugging output");
 }
 */
+
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false, // Render requires SSL but allows self-signed certs
-  },
+  ssl:
+    process.env.NODE_ENV === "production"
+      ? { rejectUnauthorized: false }
+      : false,
 });
+
 export default db;
