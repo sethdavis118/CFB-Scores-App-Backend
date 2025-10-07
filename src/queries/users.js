@@ -92,17 +92,53 @@ export async function getUserDataByID(id) {
   return user;
 }
 
-export async function editUser(
-  id,
-  username,
-  email,
-  favoriteTeam,
-  favoriteConf
-) {
-  // Add password later
-  const sql = `UPDATE user SET username = $2, email = $3, favorite_team = $4, favorite_conference = $5 WHERE id = $1 RETURNING *`;
-  const {
-    rows: [updatedUser],
-  } = await db.query(sql, [id, username, email, favoriteTeam, favoriteConf]);
-  return updatedUser;
+export async function updateUser(userId, newValues) {
+  try {
+    const fields = [];
+    const values = [];
+    let index = 1;
+    const { username, email, favorite_team, favorite_conference } = newValues;
+    console.log(username);
+    console.log(favorite_team);
+    /*
+      get field values from newValues array
+      and return a user object
+    */
+    for (const [key, value] of Object.entries(newValues)) {
+      // if request body doesn't include a field to update, ignore it.
+      if (value !== undefined && value !== null) {
+        fields.push(`${key} = $${index++}`); //need extra $ to make a literal $ when run.
+      }
+      //add value object to values array declared under try in each iteration{
+      values.push(value);
+    }
+    if (fields.length === 0) {
+      `SELECT id, username, email, favorite_team, favorite_conference FROM user ${[
+        userId,
+      ]}`;
+      return user;
+    }
+    //ad the userId argument to the values array defined below the try {
+    values.push(userId);
+    /*
+      Now that all the fields in the user object were retrieved by the SELECT
+      statement, all the fields to updated are seperated by a comma and space.
+      The index was defined in line 83. , so each loop its $1, $2, etc
+    */
+    const sql = `
+    UPDATE users
+    SET ${fields.join(", ")}
+    WHERE id = $${index}
+    RETURNING *;`;
+    console.log(`UPDATE SQL: ${sql} field values ${values}`);
+
+    const {
+      rows: [user],
+    } = await db.query(sql, values);
+
+    return { user };
+  } catch (err) {
+    console.error(`Error in updateUser: ${err.message}`);
+    throw err;
+  }
 }

@@ -2,7 +2,6 @@ import db from "../db/client.js";
 
 export async function createLeaderboard(
   user_id,
-  username,
   position = 0,
   weekly_wins = 0,
   weekly_losses = 0,
@@ -12,13 +11,12 @@ export async function createLeaderboard(
 ) {
   const sql = `
     INSERT INTO leaderboard (
-      user_id, username, position, weekly_wins, weekly_losses, 
+      user_id, position, weekly_wins, weekly_losses, 
       all_time_wins, all_time_losses, total_amount_won
     )
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    VALUES ($1, $2, $3, $4, $5, $6, $7)
     ON CONFLICT (user_id)
     DO UPDATE SET
-      username = EXCLUDED.username, -- keep username updated
       position = EXCLUDED.position,
       weekly_wins = leaderboard.weekly_wins + EXCLUDED.weekly_wins,
       weekly_losses = leaderboard.weekly_losses + EXCLUDED.weekly_losses,
@@ -32,7 +30,6 @@ export async function createLeaderboard(
     rows: [leaderboard],
   } = await db.query(sql, [
     user_id,
-    username,
     position,
     weekly_wins,
     weekly_losses,
@@ -48,7 +45,7 @@ export async function createLeaderboard(
 export async function getLeaderboard(limit = 10) {
   const sql = `
     SELECT username, total_amount_won
-    FROM leaderboard
+    FROM leaderboard JOIN users ON leaderboard.user_id = users.id
     ORDER BY total_amount_won DESC
     LIMIT $1;
   `;

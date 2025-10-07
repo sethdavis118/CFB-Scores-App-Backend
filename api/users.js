@@ -7,7 +7,7 @@ import {
   createUSer,
   getUserByEmailAndPassword,
   getUserById,
-  editUser,
+  updateUser,
 } from "#src/queries/users";
 import { createToken, verifyToken } from "#utils/jwt";
 import { createLeaderboard } from "#src/queries/leaderboard";
@@ -31,7 +31,7 @@ router.post(
       if (!user || !user.id) {
         return res.status(400).json({ error: "User creation failed" });
       }
-      await createLeaderboard(user.id, user.username);
+      await createLeaderboard(user.id);
 
       const token = createToken({ id: user.id });
       res.status(201).json({ token });
@@ -87,15 +87,20 @@ router.get("/me", async (req, res) => {
 router.put("/edit", async (req, res) => {
   try {
     const { id } = req.user;
-    const { username, email, favoriteTeam, favoriteConf } = req.body; // Add password later
+    // const { username, email, favoriteTeam, favoriteConf } = req.body; // Add password later
+    const payload = req.body;
+    const { username, email, favoriteTeam, favoriteConf } = payload;
 
-    const editedUser = editUser(
-      id,
-      username,
-      email,
-      favoriteTeam,
-      favoriteConf
-    );
+    const newPayload = {
+      username: username,
+      email: email,
+      favorite_team: favoriteTeam,
+      favorite_conference: favoriteConf,
+    };
+    console.log("payload", payload);
+    console.log("New payload", newPayload);
+
+    const editedUser = updateUser(id, newPayload);
     res.status(200).send(editedUser);
   } catch (error) {
     console.error(error);
